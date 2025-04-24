@@ -215,44 +215,27 @@ public class OrderServiceImpl implements OrderService {
 			String code = list.getCode();
 			String email = list.getAddress().getUser().getEmail();
 
-			// Nội dung email HTML
-			String emailContent = """
-					    <html>
-					    <head>
-					        <style>
-					            body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-					            .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
-					            .header { text-align: center; margin-bottom: 20px; }
-					            .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
-					            .content { font-size: 16px; color: #333; line-height: 1.5; }
-					            .highlight { color: #e67e22; font-weight: bold; }
-					            .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }
-					        </style>
-					    </head>
-					    <body>
-					        <div class='container'>
-					            <div class='header'>
-					                <img src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo' style='width: 60%%;'/>
-					            </div>
-					            <div class='title'>Đơn Hàng Đã Được Xác Nhận</div>
-					            <div class='content'>
-					                <p>Xin chào <span class='highlight'>%s</span>,</p>
-					                <p>Chúng tôi rất vui thông báo rằng đơn hàng của bạn với mã <strong>%s</strong> đã được xác nhận.</p>
-					                <p>Chúng tôi sẽ tiến hành xử lý và giao hàng trong thời gian sớm nhất.</p>
-					                <p>Cảm ơn bạn đã mua hàng tại <strong>BookNest</strong>!</p>
-					            </div>
-					            <div class='footer'>
-					                Trân trọng,<br>
-					                BookNest Shop
-					            </div>
-					        </div>
-					    </body>
-					    </html>
-					"""
-					.formatted(fullname, code);
+			String emailContent = String.format("<html>" + "<head>" + "    <style>"
+					+ "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }"
+					+ "        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }"
+					+ "        .header { text-align: center; margin-bottom: 20px; }"
+					+ "        .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }"
+					+ "        .content { font-size: 16px; color: #333; line-height: 1.5; }"
+					+ "        .highlight { color: #e67e22; font-weight: bold; }"
+					+ "        .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }"
+					+ "    </style>" + "</head>" + "<body>" + "    <div class='container'>"
+					+ "        <div class='header'>"
+					+ "            <img src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo' style='width: 60%%;'/>"
+					+ "        </div>" + "        <div class='title'>Đơn Hàng Đã Được Xác Nhận</div>"
+					+ "        <div class='content'>" + "            <p>Xin chào <span class='highlight'>%s</span>,</p>"
+					+ "            <p>Chúng tôi rất vui thông báo rằng đơn hàng của bạn với mã <strong>%s</strong> đã được xác nhận.</p>"
+					+ "            <p>Chúng tôi sẽ tiến hành xử lý và giao hàng trong thời gian sớm nhất.</p>"
+					+ "            <p>Cảm ơn bạn đã mua hàng tại <strong>BookNest</strong>!</p>" + "        </div>"
+					+ "        <div class='footer'>" + "            Trân trọng,<br>" + "            BookNest Shop"
+					+ "        </div>" + "    </div>" + "</body>" + "</html>", fullname, code);
 
-			// Gửi email
 			mailerService.queue(email, "Đơn hàng #" + code + " đã được xác nhận", emailContent);
+
 		}
 	}
 
@@ -344,42 +327,25 @@ public class OrderServiceImpl implements OrderService {
 		String code = order.getCode();
 		String email = order.getAddress().getUser().getEmail();
 
-		String emailContent = """
-				    <html>
-				    <head>
-				        <style>
-				            body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-				            .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
-				            .header { text-align: center; margin-bottom: 20px; }
-				            .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
-				            .content { font-size: 16px; color: #333; line-height: 1.5; }
-				            .highlight { color: #e67e22; font-weight: bold; }
-				            .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }
-				        </style>
-				    </head>
-				    <body>
-				        <div class='container'>
-				            <div class='header'>
-				                <img src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo' style='width: 60%%;'/>				           
-				            </div>
-				            <div class='title'>Đơn Hàng Đã Bị Hủy</div>
-				            <div class='content'>
-				                <p>Xin chào <span class='highlight'>%s</span>,</p>
-				                <p>Đơn hàng của bạn với mã <strong>%s</strong> đã được <strong>hủy</strong> theo yêu cầu hoặc do có sự cố trong quá trình xử lý.</p>
-				                <p>Số tiền bạn đã thanh toán sẽ được hoàn lại vào ví trong hệ thống. Nếu cần hỗ trợ thêm, vui lòng liên hệ qua số <strong>0358768117</strong>.</p>
-				                <p>Chúng tôi xin lỗi vì sự bất tiện này và hy vọng sẽ tiếp tục được phục vụ bạn trong tương lai.</p>
-				            </div>
-				            <div class='footer'>
-				                Trân trọng,<br>
-				                BookNest Shop
-				            </div>
-				        </div>
-				    </body>
-				    </html>
-				"""
-				.formatted(fullname, code);
+		String emailContent = String.format("<html>" + "<head>" + "    <style>"
+				+ "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }"
+				+ "        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }"
+				+ "        .header { text-align: center; margin-bottom: 20px; }"
+				+ "        .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }"
+				+ "        .content { font-size: 16px; color: #333; line-height: 1.5; }"
+				+ "        .highlight { color: #e67e22; font-weight: bold; }"
+				+ "        .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }"
+				+ "    </style>" + "</head>" + "<body>" + "    <div class='container'>" + "        <div class='header'>"
+				+ "            <img src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo' style='width: 60%%;'/>"
+				+ "        </div>" + "        <div class='title'>Đơn Hàng Đã Bị Hủy</div>"
+				+ "        <div class='content'>" + "            <p>Xin chào <span class='highlight'>%s</span>,</p>"
+				+ "            <p>Đơn hàng của bạn với mã <strong>%s</strong> đã được <strong>hủy</strong> theo yêu cầu hoặc do có sự cố trong quá trình xử lý.</p>"
+				+ "            <p>Số tiền bạn đã thanh toán sẽ được hoàn lại vào ví trong hệ thống. Nếu cần hỗ trợ thêm, vui lòng liên hệ qua số <strong>0358768117</strong>.</p>"
+				+ "            <p>Chúng tôi xin lỗi vì sự bất tiện này và hy vọng sẽ tiếp tục được phục vụ bạn trong tương lai.</p>"
+				+ "        </div>" + "        <div class='footer'>" + "            Trân trọng,<br>"
+				+ "            BookNest Shop" + "        </div>" + "    </div>" + "</body>" + "</html>", fullname,
+				code);
 
-		// Gửi email
 		mailerService.queue(email, "Đơn hàng #" + code + " đã bị hủy", emailContent);
 
 	}
@@ -419,43 +385,27 @@ public class OrderServiceImpl implements OrderService {
 			String fullname = list.getAddress().getUser().getFullname();
 			String code = list.getCode();
 			String email = list.getAddress().getUser().getEmail();
-
-			String emailContent = """
-					    <html>
-					    <head>
-					        <style>
-					            body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-					            .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
-					            .header { text-align: center; margin-bottom: 20px; }
-					            .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
-					            .content { font-size: 16px; color: #333; line-height: 1.5; }
-					            .highlight { color: #e67e22; font-weight: bold; }
-					            .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }
-					        </style>
-					    </head>
-					    <body>
-					        <div class='container'>
-					            <div class='header'>
-					                <img src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo' style='width: 60%%;'/>
-					            </div>
-					            <div class='title'>Đơn Hàng Đang Được Vận Chuyển</div>
-					            <div class='content'>
-					                <p>Xin chào <span class='highlight'>%s</span>,</p>
-					                <p>Đơn hàng của bạn với mã <strong>%s</strong> hiện đang trên đường giao đến bạn.</p>
-					                <p>Vui lòng đảm bảo điện thoại luôn sẵn sàng để đơn vị vận chuyển có thể liên hệ khi cần.</p>
-					                <p>Đừng quên kiểm tra sản phẩm trước khi nhận nhé!</p>
-					            </div>
-					            <div class='footer'>
-					                Trân trọng,<br>
-					                BookNest Shop
-					            </div>
-					        </div>
-					    </body>
-					    </html>
-					"""
-					.formatted(fullname, code);
+			String emailContent = String.format("<html>" + "<head>" + "    <style>"
+					+ "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }"
+					+ "        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }"
+					+ "        .header { text-align: center; margin-bottom: 20px; }"
+					+ "        .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }"
+					+ "        .content { font-size: 16px; color: #333; line-height: 1.5; }"
+					+ "        .highlight { color: #e67e22; font-weight: bold; }"
+					+ "        .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }"
+					+ "    </style>" + "</head>" + "<body>" + "    <div class='container'>"
+					+ "        <div class='header'>"
+					+ "            <img src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo' style='width: 60%%;'/>"
+					+ "        </div>" + "        <div class='title'>Đơn Hàng Đang Được Vận Chuyển</div>"
+					+ "        <div class='content'>" + "            <p>Xin chào <span class='highlight'>%s</span>,</p>"
+					+ "            <p>Đơn hàng của bạn với mã <strong>%s</strong> hiện đang trên đường giao đến bạn.</p>"
+					+ "            <p>Vui lòng đảm bảo điện thoại luôn sẵn sàng để đơn vị vận chuyển có thể liên hệ khi cần.</p>"
+					+ "            <p>Đừng quên kiểm tra sản phẩm trước khi nhận nhé!</p>" + "        </div>"
+					+ "        <div class='footer'>" + "            Trân trọng,<br>" + "            BookNest Shop"
+					+ "        </div>" + "    </div>" + "</body>" + "</html>", fullname, code);
 
 			mailerService.queue(email, "Đơn hàng #" + code + " đang được vận chuyển", emailContent);
+
 		}
 	}
 
