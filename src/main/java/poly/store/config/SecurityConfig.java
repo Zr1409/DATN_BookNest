@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import poly.store.service.UserService;
 import poly.store.service.impl.ShoppingCartServiceImpl;
@@ -101,9 +102,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 * @return phuong thuc ma hoa
 	 */
 	@Bean
-	public BCryptPasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
+	public PasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
 	}
+
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {

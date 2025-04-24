@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import poly.store.service.RoleService;
@@ -39,7 +41,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private UserService userService;
 	
 	@Autowired
-	private BCryptPasswordEncoder pe;
+	@Lazy
+	private PasswordEncoder pe;
 	// Thong tin role service
 	@Autowired
 	private RoleService roleService;
