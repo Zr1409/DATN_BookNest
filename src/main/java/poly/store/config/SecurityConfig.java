@@ -27,10 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserService userService;
 
-	// Phuong thuc ma hoa mat khau
-	@Autowired
-	BCryptPasswordEncoder pe;
-
 	// Phuong thuc cap quyen
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
@@ -104,10 +100,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 * 
 	 * @return phuong thuc ma hoa
 	 */
-	@Bean
-	public BCryptPasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {

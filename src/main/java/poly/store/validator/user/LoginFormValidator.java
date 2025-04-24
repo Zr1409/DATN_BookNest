@@ -31,9 +31,6 @@ public class LoginFormValidator implements Validator {
 	// Class cung cap cac ham lam viec voi bang User trong database
 	@Autowired	
 	UserService userService;
-	
-	@Autowired
-	PasswordEncoder passwordEncoder;
 
 	/**
 	 * Lien ket class UserLogin voi class bat loi
