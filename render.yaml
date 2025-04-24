@@ -2,8 +2,5 @@ services:
   - type: web
     name: BookNest
     env: java
-    buildCommand: ./mvnw clean package
+    buildCommand: export JAVA_HOME=$JAVA_HOME_11_X64 && ./mvnw clean package
     startCommand: java -jar target/*.jar
-    envVars:
-      - key: JAVA_HOME
-        value: /opt/render/project/.jdk
