@@ -11,10 +11,12 @@ COPY . .
 RUN chmod +x mvnw
 
 # Build project
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -DskipTests -X
+
 
 # Mở cổng 8080
 EXPOSE 8080
 
 # Chạy ứng dụng
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/DATN_BookNest-0.0.1-SNAPSHOT.jar"]
+
