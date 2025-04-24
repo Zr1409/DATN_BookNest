@@ -42,9 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private RoleService roleService;
 	
-	@Autowired
-	private BCryptPasswordEncoder pe;
-	
 	/**
 	 * Cung cap quyen cho project
 	 * 
@@ -75,7 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				grandList.add(authority);
 			}
 		}
-		String password = pe.encode(appUser.getPassword());
+		String password = appUser.getPassword();
 		UserDetails userDetails = (UserDetails) new User(appUser.getEmail(), password, grandList);
 		
 		return userDetails;

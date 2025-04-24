@@ -37,8 +37,6 @@ public class ForgetPasswordController {
 	@Autowired
 	MailerServiceImpl mailerService;
 	
-	@Autowired
-	BCryptPasswordEncoder passwordEncoder;
 
 	/**
 	 * Hien thi man hinh forget-password

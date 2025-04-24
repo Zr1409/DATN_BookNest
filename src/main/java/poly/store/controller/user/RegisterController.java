@@ -77,8 +77,6 @@ public class RegisterController {
 	@Autowired
 	DiscountDao discountDao;
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
 
 	/**
 	 * Rang buoc form voi trinh bat loi
