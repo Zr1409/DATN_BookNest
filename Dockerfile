@@ -22,6 +22,7 @@ ENV JAVA_OPTS="-Djdk.tls.client.protocols=TLSv1.2"
 
 
 # Chạy ứng dụng
-CMD ["java", "-jar", "target/PS36614_DATN-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-Djavax.net.ssl.trustStorePassword=changeit", "-Djdk.tls.client.protocols=TLSv1.2", "-jar", "target/PS36614_DATN-0.0.1-SNAPSHOT.jar"]
+
 
 
