@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: BookNest
+    env: java
+    buildCommand: ./mvnw clean package
+    startCommand: java -jar target/*.jar
+    build:
+      env:
+        JAVA_HOME: /opt/render/project/.jdk
