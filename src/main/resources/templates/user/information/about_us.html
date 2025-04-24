@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{/user/layout/_form :: dynamic(
+	th:replace="~{user/layout/_form :: dynamic(
             ~{::main},
             ~{::#aside},
             ~{::#material},
@@ -34,7 +34,7 @@
 
 		<!-- 		<div th:replace="/user/home/special_product.html"></div> -->
 
-		<div th:replace="/user/home/newsletter.html"></div>
+		<div th:replace="user/home/newsletter.html"></div>
 
 		<!-- 		<div class="swiper-viewport"> -->
 		<!-- 			<div id="banner2" class="swiper-container"> -->

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{/user/layout/_form :: dynamic(
+	th:replace="~{user/layout/_form :: dynamic(
 				~{::main},
 				~{::#aside},
 				~{::#material},
@@ -19,9 +19,9 @@
 	</th:block>
 	<th:block id="aside">
 		<th:block th:if="${listBook.content.size != 0}">
-			<div th:replace="/user/list/refine_search.html"></div>
+			<div th:replace="user/list/refine_search.html"></div>
 		</th:block>
-		<div th:replace="/user/home/bestseller.html"></div>
+		<div th:replace="user/home/bestseller.html"></div>
 		<div class="swiper-viewport">
 			<div id="banner0" class="swiper-container">
 				<div class="swiper-wrapper">
@@ -37,7 +37,7 @@
 
 	<main>
 		<form id="formPage" action="" method="get">
-			<div th:replace="/user/list/list_product_search.html"></div>
+			<div th:replace="user/list/list_product_search.html"></div>
 		</form>
 	</main>
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{/user/layout/_form :: dynamic(
+	th:replace="~{user/layout/_form :: dynamic(
 				~{::main},
 				~{::#aside},
 				~{::#material},
@@ -19,11 +19,11 @@
 		</ul>
 	</th:block>
 	<th:block id="aside">
-		<div th:replace="/user/home/bestseller.html"></div>		
+		<div th:replace="user/home/bestseller.html"></div>		
 	</th:block>
 
 	<main>
-		<div th:replace="/user/checkout/checkout_detail.html"></div>
+		<div th:replace="user/checkout/checkout_detail.html"></div>
 	</main>
 
 </body>
