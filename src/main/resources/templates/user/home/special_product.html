@@ -1,0 +1,136 @@
+<style>
+.btn-buy-now {
+	background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+	/* Màu đỏ hồng mặc định */
+	color: white !important;
+	font-size: 16px !important;
+	padding: 14px 28px !important;
+	border: none !important;
+	border-radius: 5px !important; /* Bo góc tròn đẹp */
+	box-shadow: 0px 1px 5px rgba(255, 77, 77, 0.4) !important;
+	cursor: pointer !important;
+	position: relative !important;
+	overflow: hidden !important;
+	transition: all 0.4s ease-in-out !important;
+}
+
+/* Khi đưa chuột vào, nút sẽ chuyển màu cam */
+.btn-buy-now:hover {
+	background: linear-gradient(135deg, #ff9a44, #ff6a00) !important;
+	/* Màu cam */
+	transform: scale(1.05) !important;
+	box-shadow: 0px 1px 5px rgba(255, 140, 0, 0.6) !important;
+}
+
+/* Hiệu ứng bấm xuống */
+.btn-buy-now:active {
+	transform: scale(0.95) !important;
+	box-shadow: 0px 3px 10px rgba(255, 140, 0, 0.3) !important;
+}
+.discount-percent {
+	background-color: #ff6666 !important; /* Màu đỏ nhạt */
+	color: white !important;
+	font-weight: bold !important;
+	padding: 4px 8px !important;
+	border-radius: 5px !important;
+	font-size: 13px !important;
+	display: inline-block !important;
+	margin-left: 8px !important;
+}
+</style>
+<th:block th:i="${listSale.size!=0}">
+	<div class="box all-products special left-vertical-product">
+		<div class="box-heading">
+			<div class="box-content">
+				<div class="page-title toggled">
+					<h3>Đang khuyến mãi</h3>
+				</div>
+				<div class="block_box">
+					<div id="special-carousel"
+						class="box-product vertical-carousel clearfix" data-items="1">
+						<th:block th:each="item: ${listSale}">
+							<div class="product-layout  col-xs-12">
+								<div class="product-thumb transition clearfix">
+									<div class="image">
+										<a th:href="@{|/san-pham/${item.book.Namesearch}|}"> <img
+											th:src="@{|/assets/images/imageProduct/${item.book.image1}|}"
+											alt="iPhone" title="iPhone" class="img-responsive" /> <img
+											class="img-responsive hover-img"
+											th:src="@{|/assets/images/imageProduct/${item.book.image2}|}"
+											title="iPhone" alt="iPhone" />
+										</a>
+										<div class="sale-text">
+											<span class="section-sale">On Sale!</span>
+										</div>
+									</div>
+									<div class="thumb-description clearfix">
+										<div class="caption">
+											<h4 class="product-title">
+												<a th:href="@{|/san-pham/${item.book.Namesearch}|}">[[${item.book.name}]]</a>
+											</h4>
+											<p class="price">
+													<th:block th:if="${item.book.sales > 0}">
+														<!-- Giá gốc bị gạch nếu có khuyến mãi -->
+														<span class="price-old">
+															[[${#numbers.formatInteger(item.book.price, 3,
+															'POINT')}]]₫ </span>
+														<br>
+														<!-- Giá khuyến mãi -->
+														<span class="price-sale">
+															[[${#numbers.formatInteger(item.book.sales, 3,
+															'POINT')}]]₫ </span>
+														<span class="discount-percent">
+															-[[${#numbers.formatInteger(((item.book.price -
+															item.book.sales) * 100.0 / item.book.price), 0,
+															'POINT')}]]% </span>
+													</th:block>
+
+													<th:block th:if="${item.book.sales == 0}">
+														<!-- Nếu không có giảm giá, chỉ hiển thị giá bình thường -->
+        												[[${#numbers.formatInteger(item.book.price, 3, 'POINT')}]]₫
+    												</th:block>
+												</p>
+											<div
+												style="flex-direction: row !important; display: flex !important; align-items: center !important; font-size: 14px !important;">
+												<div class="rating">
+													<th:block th:if="${item.totalStar != 0}">
+														<th:block
+															th:each="i: ${#numbers.sequence(1, item.totalStar)}">
+															<span class="fa fa-stack"><i
+																class="fa fa-star fa-stack-1x"></i><i
+																class="fa fa-star-o fa-stack-1x"></i></span>
+														</th:block>
+													</th:block>
+													<th:block th:if="${item.totalStar != 5}">
+														<th:block
+															th:each="i: ${#numbers.sequence(1, 5 - item.totalStar)}">
+															<span class="fa fa-stack"><i
+																class="fa fa-star-o fa-stack-1x"></i></span>
+														</th:block>
+													</th:block>
+												</div>
+												<span class="sold-quantity"
+													style="color: #7A7E7F; white-space: nowrap; margin-left: 2px !important; margin-top: 8px !important;">|
+													Đã bán: [[${#numbers.formatInteger(item.soldQuantity, 0,
+													'COMMA')}]] </span> <input type="hidden" id="productId"
+													th:value="${item.book.id}" />
+											</div>
+
+
+											<button type="button"
+												class="addcart btn-buy-now custom-buy-now"
+												title="Add to Cart"
+												th:onclick="location.href = '/san-pham/[(${item.book.Namesearch})]'">Mua
+												ngay</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</th:block>

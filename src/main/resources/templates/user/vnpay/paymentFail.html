@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Thanh toán thất bại</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            margin: 20px;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+        }
+        .card-header {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .card-body {
+            padding: 40px;
+            background-color: #ffffff;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 1.5rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8d7da;
+            border-radius: 12px;
+            border: 2px solid #f5c6cb;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+            transform: translateY(-2px);
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mt-5 {
+            margin-top: 4rem;
+        }
+        .alert {
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Thanh toán thất bại</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger error-message" role="alert">
+                        <strong>Rất tiếc!</strong> Thanh toán của bạn không thành công. Vui lòng thử lại hoặc liên hệ hỗ trợ.
+                    </div>
+
+                    <p class="text-center">Vui lòng kiểm tra lại thông tin thanh toán của bạn và thử lại. Nếu vấn đề vẫn tiếp diễn, xin vui lòng liên hệ với chúng tôi để được hỗ trợ.</p>
+                    
+                    <div class="text-center">
+                        <a href="/shop/cart/checkout" class="btn btn-primary">Quay lại trang đặt hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

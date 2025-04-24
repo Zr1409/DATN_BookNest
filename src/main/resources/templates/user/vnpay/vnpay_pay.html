@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tạo mới đơn hàng</title>
+
+<!-- Bootstrap core CSS -->
+<link href="/assets/vnpay_assets/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/vnpay_assets/jumbotron-narrow.css" rel="stylesheet">
+<script src="/assets/vnpay_assets/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="header clearfix">
+			<h3 class="text-muted">VNPAY DEMO</h3>
+		</div>
+		<h3>Tạo mới đơn hàng</h3>
+		<div class="table-responsive">
+			<form th:action="@{/vnpay/process}" id="frmCreateOrder" method="post">
+				<div class="form-group">
+					<label for="amount">Số tiền</label> <input class="form-control"
+						id="amount" name="amount" type="number" min="1" max="100000000"
+						value="10000" required />
+				</div>
+				<h4>Chọn phương thức thanh toán</h4>
+				<div class="form-group">
+					<h5>Cách 1: Chuyển hướng sang Cổng VNPAY chọn phương thức
+						thanh toán</h5>
+					<input type="radio" id="bankCode1" name="bankCode" value="" checked>
+					<label for="bankCode1">Cổng thanh toán VNPAYQR</label><br>
+
+					<h5>Cách 2: Tách phương thức tại site của đơn vị kết nối</h5>
+					<input type="radio" id="bankCode2" name="bankCode" value="VNPAYQR">
+					<label for="bankCode2">Thanh toán bằng ứng dụng hỗ trợ
+						VNPAYQR</label><br> <input type="radio" id="bankCode3"
+						name="bankCode" value="VNBANK"> <label for="bankCode3">Thanh
+						toán qua thẻ ATM/Tài khoản nội địa</label><br> <input type="radio"
+						id="bankCode4" name="bankCode" value="INTCARD"> <label
+						for="bankCode4">Thanh toán qua thẻ quốc tế</label><br>
+				</div>
+				<div class="form-group">
+					<h5>Chọn ngôn ngữ giao diện thanh toán:</h5>
+					<input type="radio" id="languageVN" name="language" value="vn"
+						checked> <label for="languageVN">Tiếng Việt</label><br>
+					<input type="radio" id="languageEN" name="language" value="en">
+					<label for="languageEN">Tiếng Anh</label><br>
+				</div>
+				<button type="submit" class="btn btn-default">Thanh toán</button>
+			</form>
+		</div>
+		<footer class="footer">
+			<p>&copy; VNPAY 2020</p>
+		</footer>
+	</div>
+
+	<link href="https://pay.vnpay.vn/lib/vnpay/vnpay.css" rel="stylesheet" />
+	<script src="https://pay.vnpay.vn/lib/vnpay/vnpay.min.js"></script>
+	<script type="text/javascript">
+		$("#frmCreateOrder").submit(function(event) {
+			event.preventDefault();
+			var postData = $(this).serialize();
+			var submitUrl = $(this).attr("action");
+			$.ajax({
+				type : "POST",
+				url : submitUrl,
+				data : postData,
+				dataType : 'json',
+				success : function(response) {
+					if (response.code === '00') {
+						if (window.vnpay) {
+							vnpay.open({
+								width : 768,
+								height : 600,
+								url : response.data
+							});
+						} else {
+							window.location.href = response.data;
+						}
+					} else {
+						alert(response.message);
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

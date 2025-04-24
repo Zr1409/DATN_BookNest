@@ -1,0 +1,291 @@
+<div id="content" class="col-sm-9" ng-app="checkout-app"
+	ng-controller="checkout-ctrl">
+	<div class="alert alert-dismissible alert-success"
+		style="display: none;" id="alert">
+		Bạn đã sử dụng địa chỉ giao hàng mới thành công!
+		<button type="button" class="close" data-dismiss="alert">×</button>
+	</div>
+	<h1>Thanh toán</h1>
+	<form th:action="@{/shop/cart/checkout}" method="post">
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">Bước 1: Giỏ Hàng</h4>
+				</div>
+				<div class="panel-collapse collapse" id="collapse-checkout-option">
+					<div class="panel-body"></div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title" id="txtAddress">
+						<a href="#collapse-payment-address" data-toggle="collapse"
+							id="btnAddress" data-parent="#accordion" class="accordion-toggle"
+							aria-expanded="true">Bước 2: Địa chỉ giao hàng <i
+							class="fa fa-caret-down"></i></a>
+					</h4>
+				</div>
+
+
+				<div class="panel-collapse collapse in"
+					id="collapse-payment-address" aria-expanded="true">
+					<div class="panel-body">
+						<div class="form-horizontal">
+							<div class="radio">
+								<label style="text-transform: none;"> <input
+									type="radio" name="payment_address" value="existing"
+									checked="checked" onclick="useAddressExits()"> Sử dụng
+									địa chỉ có sẵn
+								</label>
+							</div>
+							<div id="payment-existing">
+								<select name="address_id" class="form-control"> <
+									<th:block th:if="${listAddress.isEmpty() == true}">
+										<option>Vui lòng thêm địa chị giao hàng</option>
+									</th:block>
+
+									<th:block th:unless="${listAddress.isEmpty() == true}">
+										<option th:each="item, iterStat : ${listAddress}"
+											th:value="${item.id}" th:selected="${iterStat.last}">
+											[[${item.detail}]], [[${item.ward}]], [[${item.district}]],
+											[[${item.province}]]</option>
+									</th:block>
+
+								</select>
+							</div>
+							<div class="radio">
+								<label style="text-transform: none;"> <input
+									type="radio" value="new" name="payment_address"
+									onclick="useAddressAnother()"> Sử dụng địa chỉ giao
+									hàng mới
+								</label>
+							</div>
+							<br>
+							<div id="payment-new" style="display: none;">
+								<div class="form-group required" id="divFullName">
+									<label id="lblFullName" class="col-sm-2 control-label">Họ
+										và tên</label>
+									<div class="col-sm-10">
+										<input type="text" ng-model="form.fullName" id="fullName"
+											placeholder="Vui lòng nhập đầy đủ họ và tên"
+											class="form-control">
+										<div id="errorFullName" style="color: #dc3545;"></div>
+									</div>
+								</div>
+								<div class="form-group required">
+									<label id="lblPhone" class="col-sm-2 control-label">Số
+										điện thoại</label>
+									<div class="col-sm-10">
+										<input type="text" ng-model="form.phone" id="phone"
+											placeholder="Vui lòng nhập số điện thoại liên hệ"
+											class="form-control">
+										<div id="errorPhone" style="color: #dc3545;"></div>
+									</div>
+								</div>
+								<div class="form-group required">
+									<label id="lblDetail" class="col-sm-2 control-label">Địa
+										chỉ nhận hàng</label>
+									<div class="col-sm-10">
+										<input type="text" ng-model="form.detail" id="detail"
+											placeholder="Vui lòng nhập địa chỉ của bạn"
+											class="form-control">
+										<div id="errorDetail" style="color: #dc3545;"></div>
+									</div>
+								</div>
+								<div class="form-group required">
+									<label class="col-sm-2 control-label">Tỉnh/ Thành phố</label>
+									<div class="col-sm-10">
+										<select class="form-control" ng-model="form.provinceId"
+											ng-change="loadDistricts()">
+											<option value="">Vui lòng chọn tỉnh/thành phố</option>
+											<option ng-repeat="item in province" value="{{item.id}}">{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group required">
+									<label class="col-sm-2 control-label">Quận/ Huyện</label>
+									<div class="col-sm-10">
+										<select class="form-control" ng-model="form.districtId"
+											ng-change="loadWards()">
+											<option value="">Vui lòng chọn quận/huyện</option>
+											<option ng-repeat="item in district" value="{{item.id}}">{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group required">
+									<label class="col-sm-2 control-label">Phường/ Xã</label>
+									<div class="col-sm-10">
+										<select class="form-control" ng-model="form.wardId"
+											ng-change="calculateShippingFee()">
+											<option value="">Vui lòng chọn phường/xã</option>
+											<option ng-repeat="item in ward" value="{{item.id}}">{{item.prefix}}
+												{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+
+
+							</div>
+
+							<p>Phí vận chuyển:
+								[[${#numbers.formatInteger(shippingFee,shippingFee==0?0:3,'POINT')}]]₫</p>
+
+							<div class="buttons clearfix">
+								<div class="pull-right">
+									<a onclick="transferMethod()" id="btnAddressExits"
+										class="btn btn-primary"
+										th:classappend="${listAddress.isEmpty() == true?'disabled':''}">Tiếp
+										tục</a> <a id="btnAddressAnother" ng-click="addAddress()"
+										class="btn btn-primary">Tiếp tục</a>
+								</div>
+							</div>
+						</div>
+						<script type="text/javascript">
+							$('input[name=\'payment_address\']').on('change',
+									function() {
+										if (this.value == 'new') {
+											$('#payment-existing').hide();
+											$('#payment-new').show();
+										} else {
+											$('#payment-existing').show();
+											$('#payment-new').hide();
+										}
+									});
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title" id="txtMethod">
+						<a href="#collapse-shipping-method" data-toggle="collapse"
+							id="btnMethod" data-parent="#accordion" class="accordion-toggle"
+							aria-expanded="true">Bước 3: Phương thức thanh toán <i
+							class="fa fa-caret-down"></i></a>
+					</h4>
+				</div>
+				<div class="panel-collapse collapse in"
+					id="collapse-shipping-method" aria-expanded="true">
+					<div class="panel-body">
+						<p>Chọn phương thức thanh toán cho đơn đặt hàng này.</p>
+						<!-- 					<p> -->
+						<!-- 						<strong>Thanh toán tiền mặt</strong> -->
+						<!-- 					</p> -->
+						<div class="radio">
+							<label style="text-transform: none;"> <input type="radio"
+								name="shipping_method" value="1" checked="checked">
+								Thanh toán tiền mặt
+							</label>
+						</div>
+						<!-- 					<p> -->
+						<!-- 						<strong>Thanh toán online</strong> -->
+						<!-- 					</p> -->
+						<div class="radio">
+							<label style="text-transform: none;"> <input type="radio"
+								name="shipping_method" value="0"> Thanh toán online
+								(VNPAY)
+							</label>
+						</div>
+						<p>
+							<strong>Thêm ghi chú về đơn hàng của bạn</strong>
+						</p>
+						<p>
+							<textarea name="comment" rows="8" class="form-control"></textarea>
+						</p>
+						<div class="buttons">
+							<div class="pull-left">
+								<input type="button" value="Trở lại" onclick="transferAddress()"
+									class="btn btn-primary">
+							</div>
+							<div class="pull-right">
+								<input type="button" value="Tiếp tục"
+									onclick="transferConfirm()" class="btn btn-primary">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title" id="txtConfirm">
+						<a href="#collapse-checkout-confirm" data-toggle="collapse"
+							id="btnConfirm" data-parent="#accordion" class="accordion-toggle"
+							aria-expanded="true">Bước 4: Xác nhận đơn hàng <i
+							class="fa fa-caret-down"></i></a>
+					</h4>
+				</div>
+				<div class="panel-collapse collapse in"
+					id="collapse-checkout-confirm" aria-expanded="true">
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<td class="text-left">Tên sản phẩm</td>
+										<td class="text-left">Mã số</td>
+										<td class="text-right">Số lượng</td>
+										<td class="text-right">Giá</td>
+										<td class="text-right">Thành tiền</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="item: ${cart.items}">
+										<td class="text-left"><a href="">[[${item.book.name}]]</a></td>
+										<td class="text-left">[[${item.book.code}]]</td>
+										<td class="text-right">[[${item.quantity}]]</td>
+										<td class="text-right">
+											[[${#numbers.formatInteger(item.book.sales != 0 ?
+											item.book.sales : item.book.price, 3, 'POINT')}]]</td>
+										<td class="text-right">
+											[[${#numbers.formatInteger((item.book.sales != 0 ?
+											item.book.sales : item.book.price) * item.quantity, 3,
+											'POINT')}]]</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="4" class="text-right cart-total-title"><strong>Tạm
+												tính:</strong></td>
+										<td class="text-right cart-total-price"><strong>[[${#numbers.formatInteger(total,total==0?0:3,'POINT')}]]₫</strong></td>
+									</tr>
+									<tr>
+										<td colspan="4" class="text-right cart-total-title"><strong>Phí
+												vận chuyển:</strong></td>
+										<td class="text-right cart-total-price"><strong>
+												[[${#numbers.formatInteger(shippingFee,shippingFee==0?0:3,'POINT')}]]₫</strong></td>
+									</tr>
+									<tr>
+										<td colspan="4" class="text-right cart-total-title"><strong>Mã
+												giảm giá:</strong></td>
+										<td class="text-right cart-total-price"><strong>[[${#numbers.formatInteger(cart.discount.price,cart.discount.price==0?0:3,'POINT')}]]₫</strong></td>
+									</tr>
+									<tr>
+										<td colspan="4" class="text-right cart-total-title"><strong>Tổng
+												tiền:</strong></td>
+										<td class="text-right cart-total-price"><strong>[[${#numbers.formatInteger(cart.amount
+												+ shippingFee,cart.amount==0?0:3,'POINT')}]]₫</strong></td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+						<div class="buttons">
+							<div class="pull-left">
+								<input type="button" value="Trở lại" onclick="transferMethod()"
+									class="btn btn-primary">
+							</div>
+
+							<div class="pull-right">
+								<input type="submit" value="Đặt hàng" id="button-confirm"
+									class="btn btn-primary">
+								<!-- <button type="submit" th:formaction="@{/shop/cart/checkout}" formmethod="post" class="btn btn-primary" id="button-confirm">
+								Đặt hàng
+							</button> -->
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

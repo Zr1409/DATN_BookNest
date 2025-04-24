@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/user/layout/_form :: dynamic(
+            ~{::main},
+            ~{::#aside},
+            ~{::#material},
+            ~{::#breadcums}
+            )}">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+	<th:block id="breadcums">
+		<ul class="breadcrumb">
+			<li><a th:href="@{/index}">Trang chủ</a></li>
+			<li><a th:href="@{/aboutUs}">Về chúng tôi</a></li>
+		</ul>
+	</th:block>
+
+	<th:block id="aside">
+		<!-- 		<div th:replace="/user/home/our_testimonial.html"></div> -->
+		<div class="swiper-viewport">
+			<div id="banner0" class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<a href="#"><img
+							src="/assets/user/image/cache/catalog/banners/banner-dung1.jpg"
+							alt="Left Banner" class="img-responsive" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 		<div th:replace="/user/home/special_product.html"></div> -->
+
+		<div th:replace="/user/home/newsletter.html"></div>
+
+		<!-- 		<div class="swiper-viewport"> -->
+		<!-- 			<div id="banner2" class="swiper-container"> -->
+		<!-- 				<div class="swiper-wrapper"> -->
+		<!-- 					<div class="swiper-slide"> -->
+		<!-- 						<a href="#"><img -->
+		<!-- 							src="/assets/user/image/cache/catalog/banners/banner-dung3.jpg" -->
+		<!-- 							alt="Right Banner2" class="img-responsive" /></a> -->
+		<!-- 					</div> -->
+		<!-- 				</div> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
+	</th:block>
+
+	<main>
+
+		<div id="content" class="col-sm-9">
+			<h1>Thông tin</h1>
+			<div class="about-us clearfix shop-content">
+				<div class="col-sm-6">
+					<div class="cms-block">
+						<h4>1. Chúng ta là ai?</h4>
+						<p>
+							Như mọi người đã biết, <strong>BookNest</strong> là một nhà sách
+							nổi bật trong khu vực. Dù chỉ có một cửa hàng duy nhất, <strong>BookNest</strong>
+							vẫn thu hút đông đảo người yêu sách nhờ sự đa dạng của các đầu
+							sách và chất lượng phục vụ tận tâm.
+						</p>
+
+						<p>
+							Ban đầu, <strong>BookNest</strong> chỉ tập trung vào mô hình kinh
+							doanh truyền thống. Tuy nhiên, nhận thấy xu hướng mua sắm trực
+							tuyến ngày càng phổ biến, họ quyết định mở rộng sang kênh bán
+							hàng online. Khi mới ra mắt, website của <strong>BookNest</strong>
+							chưa thực sự thuận tiện, giá sách cũng cao hơn so với một số nền
+							tảng lớn khác, khiến nhiều khách hàng còn e dè.
+						</p>
+
+						<p>
+							Thế nhưng, hiện tại nếu so sánh giá giữa các trang bán sách trực
+							tuyến, <strong>BookNest</strong> lại đang cung cấp mức giá rất
+							cạnh tranh. Điều này có thể đến từ hai nguyên nhân chính: <strong>BookNest</strong>
+							có nền tảng tài chính ổn định nhờ lượng khách hàng trung thành.
+							Việc mở bán online không phải là nguồn thu chính mà chỉ là một
+							bước đi chiến lược nhằm mở rộng mô hình kinh doanh, hướng đến
+							phục vụ nhiều khách hàng hơn. <br> Để cạnh tranh với các nền
+							tảng lớn, <strong>BookNest</strong> sẵn sàng đưa ra mức giá hấp
+							dẫn, thậm chí chấp nhận giảm lợi nhuận ban đầu để tạo dấu ấn trên
+							thị trường trực tuyến. Đây là chiến lược mà nhiều doanh nghiệp
+							lớn đã áp dụng khi muốn mở rộng sang lĩnh vực mới.
+						</p>
+
+						<p>
+							Với sự đầu tư nghiêm túc, <strong>BookNest</strong> đang dần
+							khẳng định vị thế của mình, không chỉ ở cửa hàng truyền thống mà
+							còn trên thị trường sách online.
+						</p>
+
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<img title="cms-img" th:src="@{/assets/images/banner/about.jpg}"
+						alt="cms-img" class="img-responsive">
+				</div>
+				<div class="col-sm-12">
+					<div class="cms-block">
+						<h4>2. Về hàng hóa</h4>
+						<p>
+							Nhà sách <strong>BookNest</strong> chuyên kinh doanh: sách quốc
+							văn, sách ngoại văn, văn hóa phẩm, văn phòng phẩm, dụng cụ học
+							tập, quà lưu niệm, đồ chơi dành cho trẻ em… <br> <br>
+							Sách quốc văn tại <strong>BookNest</strong> có nhiều thể loại đa
+							dạng như: sách giáo khoa – tham khảo, giáo trình, sách học ngữ,
+							từ điển, sách tham khảo thuộc nhiều chuyên ngành phong phú: văn
+							học, tâm lý – giáo dục, khoa học kỹ thuật, khoa học kinh tế – xã
+							hội, khoa học thường thức, sách phong thủy, nghệ thuật sống, danh
+							ngôn, sách thiếu nhi, truyện tranh, truyện đọc, công nghệ thông
+							tin, nấu ăn, làm đẹp... <strong>BookNest</strong> cung cấp các
+							đầu sách từ nhiều nhà xuất bản và đơn vị phát hành uy tín như:
+							NXB Trẻ, Giáo Dục, Kim Đồng, Văn hóa - Văn Nghệ, Tổng hợp TP.HCM,
+							Chính Trị Quốc Gia; cùng các công ty sách nổi tiếng như Đông A,
+							Nhã Nam, Bách Việt, Alphabooks, Thái Hà, Minh Lâm, Đinh Tị, Minh
+							Long, TGM, Sáng Tạo Trí Việt, Khang Việt, Toàn Phúc… <br> <br>
+							Sách ngoại văn tại <strong>BookNest</strong> bao gồm: từ điển,
+							giáo trình, sách tham khảo, truyện tranh thiếu nhi, sách học ngữ,
+							từ vựng, ngữ pháp, luyện thi TOEFL, TOEIC, IELTS… Đặc biệt, các
+							đầu sách này được nhập khẩu trực tiếp từ các nhà xuất bản quốc tế
+							như: Cambridge, McGraw-Hill, Pearson Education, Oxford,
+							Macmillan, Cengage Learning… <br> <br> Văn phòng phẩm,
+							dụng cụ học tập, đồ chơi trẻ em và quà lưu niệm tại <strong>BookNest</strong>
+							rất đa dạng, mẫu mã đẹp, chất lượng tốt. Các sản phẩm này được
+							cung ứng bởi các thương hiệu uy tín như: Thiên Long, XNK Bình
+							Tây, Hạnh Thuận, Ngô Quang, Việt Văn, Trương Vui, Hương Mi,
+							Phương Nga, Việt Tinh Anh, Chăm sóc trẻ em Việt, Mẹ và Em Bé… <br>
+							<br> Bên cạnh đó, <strong>BookNest</strong> còn phát hành
+							độc quyền một số ấn phẩm đặc biệt và hợp tác sản xuất với các đơn
+							vị in ấn uy tín để cung ứng những mặt hàng như: lịch bloc, tập
+							học sinh, sổ tay cao cấp, agenda, văn phòng phẩm, dụng cụ học
+							tập… giúp khách hàng luôn có nhiều lựa chọn phù hợp.
+						</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</main>
+</body>
+</html>

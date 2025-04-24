@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refund</title>
+
+<!-- Bootstrap core CSS -->
+<link href="/assets/vnpay_assets/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/vnpay_assets/jumbotron-narrow.css" rel="stylesheet">
+<script src="/assets/vnpay_assets/jquery-1.11.3.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="header clearfix">
+			<h3 class="text-muted">VNPAY DEMO</h3>
+		</div>
+		<h3>Refund</h3>
+
+		<div class="table-responsive">
+			<form th:action="@{/vnpay/refund}" method="post">
+				<div class="form-group">
+					<label for="order_id">Mã giao dịch cần hoàn (vnp_TxnRef)</label> <input
+						class="form-control" id="order_id" name="order_id" type="text" />
+				</div>
+				<div class="form-group">
+					<label for="amount">Số tiền hoàn</label> <input
+						class="form-control" id="amount" name="amount" type="number"
+						min="1" max="100000000" value="10000" />
+				</div>
+				<div class="form-group">
+					<label for="trantype">Kiểu hoàn tiền</label> <select
+						name="trantype" id="trantype" class="form-control">
+						<option value="02">Hoàn tiền toàn phần</option>
+						<option value="03">Hoàn tiền một phần</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="trans_date">Thời gian khởi tạo giao dịch
+						(vnp_CreateDate)</label> <input class="form-control" id="trans_date"
+						name="trans_date" type="text" placeholder="yyyyMMddHHmmss" />
+				</div>
+				<div class="form-group">
+					<label for="user">User khởi tạo hoàn</label> <input
+						class="form-control" id="user" name="user" type="text" />
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">Refund</button>
+				</div>
+			</form>
+		</div>
+
+		<footer class="footer">
+			<p>&copy; VNPAY 2024</p>
+		</footer>
+	</div>
+</body>
+</html>

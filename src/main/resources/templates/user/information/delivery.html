@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/user/layout/_form :: dynamic(
+            ~{::main},
+            ~{::#aside},
+            ~{::#material},
+            ~{::#breadcums}
+            )}">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+
+
+</head>
+<body>
+	<th:block id="breadcums">
+		<ul class="breadcrumb">
+			<li><a th:href="@{/index}">Trang chủ</a></li>
+			<li><a th:href="@{/delivery}">Thông tin giao hàng</a></li>
+		</ul>
+	</th:block>
+
+	<th:block id="aside">
+		<div th:replace="/user/home/our_testimonial.html"></div>
+		<div class="swiper-viewport">
+			<div id="banner0" class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<a href="#"><img
+							src="/assets/user/image/cache/catalog/banners/banner-dung1.jpg"
+							alt="Left Banner" class="img-responsive" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--       <div th:replace="/user/home/special_product.html"></div> -->
+
+
+
+		<div class="swiper-viewport">
+			<div id="banner2" class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<a href="#"><img
+							src="/assets/user/image/cache/catalog/banners/banner-dung3.jpg"
+							alt="Right Banner2" class="img-responsive" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-viewport">
+			<div id="banner1" class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<a href="#"><img
+							src="/assets/user/image/cache/catalog/banners/banner-dung2.jpg"
+							alt="Right Banner" class="img-responsive" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="/user/home/newsletter.html"></div>
+	</th:block>
+
+	<main>
+
+
+		<div id="content" class="col-sm-9">
+			<h1>Thông tin</h1>
+			<div class="about-us clearfix shop-content">
+				<div class="col-sm-12">
+					<div class="cms-block">
+						<h4>1. Thông tin đóng gói, vận chuyển hàng</h4>
+						<p>
+							BookNest.com cung cấp dịch vụ giao hàng toàn quốc, gửi hàng tận
+							nơi đến địa chỉ cung cấp của Quý khách. Thời gian giao hàng dự
+							kiến phụ thuộc vào kho có hàng và địa chỉ nhận hàng của Quý
+							khách. Với đa phần đơn hàng, Fahasa.com cần vài giờ làm việc để
+							kiểm tra thông tin và đóng gói hàng. Nếu các sản phẩm đều có sẵn
+							hàng, BookNest.com sẽ nhanh chóng bàn giao cho đối tác vận
+							chuyển. Nếu đơn hàng có sản phẩm sắp phát hành, BookNest.com sẽ
+							ưu tiên giao những sản phẩm có hàng trước cho Quý khách hàng. <br>
+							<strong>Bảng thời gian dự kiến như sau:</strong>
+						</p>
+
+						<table
+							style="width: 636px; margin: 0 auto; border-collapse: collapse; border: 1px;"
+							cellspacing="0" cellpadding="7">
+							<tbody>
+								<tr>
+									<th style="border: 1px solid grey; padding: 10px;">Tuyến</th>
+									<th style="border: 1px solid grey; padding: 10px;">Khu vực</th>
+									<th style="border: 1px solid grey; padding: 10px;">Thời
+										gian dự kiến</th>
+								</tr>
+								<tr>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Hồ Chí Minh – Hồ Chí Minh</p>
+										<p>Hà Nội – Hà Nội</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Nội Thành</p>
+										<p>Ngoại Thành</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>1 – 2 ngày</p>
+									</td>
+								</tr>
+								<tr>
+									<td rowspan="2" style="border: 1px solid grey; padding: 10px;">
+										<p>Hồ Chí Minh – Miền Nam</p>
+										<p>Hà Nội – Miền Bắc</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Trung tâm Tỉnh, Thành phố, Thị xã</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>2 ngày</p>
+									</td>
+								</tr>
+								<tr>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Huyện, xã</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>2 – 3 ngày</p>
+									</td>
+								</tr>
+								<tr>
+									<td rowspan="2" style="border: 1px solid grey; padding: 10px;">
+										<p>Hồ Chí Minh – Miền Trung</p>
+										<p>Hà Nội – Miền Trung</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Trung tâm Tỉnh, Thành phố, Thị xã</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>3 ngày</p>
+									</td>
+								</tr>
+								<tr>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Huyện, xã</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>3 – 4 ngày</p>
+									</td>
+								</tr>
+								<tr>
+									<td rowspan="2" style="border: 1px solid grey; padding: 10px;">
+										<p>Hồ Chí Minh – Miền Bắc</p>
+										<p>Hà Nội – Miền Nam</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Trung tâm Tỉnh, Thành phố, Thị xã</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>4 ngày</p>
+									</td>
+								</tr>
+								<tr>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>Huyện, xã</p>
+									</td>
+									<td style="border: 1px solid grey; padding: 10px;">
+										<p>4 – 5 ngày</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p>
+							<strong>*Lưu ý:</strong> <br>
+						<ul>
+							<li>Trong một số trường hợp, hàng nằm không có sẵn tại kho
+								gần nhất, thời gian giao hàng có thể chậm hơn so với dự kiến do
+								điều hàng. Các phí vận chuyển phát sinh, Fahasa.com sẽ hỗ trợ
+								hoàn toàn.</li>
+							<li>Ngày làm việc là từ thứ hai đến thứ sau, không tính thứ
+								bảy, chủ nhật và ngày nghỉ lễ, tết, nghỉ bù, và không bao gồm
+								các tuyến huyện đảo xa.</li>
+						</ul>
+						</p>
+						<h4>2. Bảng giá dịch vụ vận chuyển hàng hóa:</h4>
+						<table
+							style="width: 636px; margin: 0 auto; border-collapse: collapse;"
+							border="1" cellspacing="0" cellpadding="7">
+							<tbody>
+								<tr>
+									<th style="padding: 10px; text-align: left;">Khu vực giao
+										hàng</th>
+									<th style="padding: 10px; text-align: left;">Phí vận
+										chuyển (đã bao gồm VAT)</th>
+								</tr>
+								<tr>
+									<td style="padding: 10px;">Nội thành Hồ Chí Minh, Hà Nội</td>
+									<td style="padding: 10px;">
+										<p>30.000 VNĐ/2kg (+2.000 VNĐ cho mỗi kg tiếp theo)</p>
+										<p>Quý khách vui lòng kiểm tra phí vận chuyển tại bước
+											“Thanh toán”.</p>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 10px;">Các khu vực khác</td>
+									<td style="padding: 10px;">
+										<p>50.000 VNĐ/2kg (+3.000 VNĐ cho mỗi kg tiếp theo)</p>
+										<p>Quý khách vui lòng kiểm tra phí vận chuyển tại bước
+											“Thanh toán”.</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p>
+							<strong>Chính sách này có hiệu lực từ ngày 01 tháng 01
+								năm 2025.</strong>
+						</p>
+						<h4>3. Một số lưu ý khi nhận hàng:</h4>
+						<ul>
+							<li>
+								<p>Trước khi tiến hành giao hàng cho Quý khách, bưu tá của
+									đối tác vận chuyển sẽ liên hệ qua số điện thoại của Quý khách
+									trước khoảng 3 đến 5 phút để xác nhận giao hàng.</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									Nếu Quý khách không thể có mặt trong đợt nhận hàng thứ nhất, <strong>BookNest</strong>
+									sẽ cố gắng liên lạc lại thêm ít nhất 2 lần nữa (trong 02 ca
+									giao hàng khác nhau) để sắp xếp thời gian giao hàng. Quý khách
+									vui lòng để ý điện thoại để liên hệ được với bưu tá giao hàng.
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									Nếu qua 3 lần liên hệ giao hàng, <strong>BookNest</strong> vẫn
+									không thể liên lạc được với Quý khách để giao hàng, BookNest sẽ
+									thông báo cho Quý khách về việc hủy đơn hàng. Trong trường hợp
+									Quý khách đã thanh toán trước cho đơn hàng, số tiền sẽ được
+									hoàn lại vào tài khoản trong vòng 5 - 7 ngày làm việc, phụ
+									thuộc vào tiến độ xử lý của ngân hàng. Số tiền hoàn lại sẽ trừ
+									chi phí vận chuyển phát sinh từ việc giao hàng nhưng Quý khách
+									không nhận hàng.
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									Trong trường hợp Quý khách không đồng ý nhận hàng do nguyên
+									nhân từ sản phẩm của <strong>BookNest</strong> không đảm bảo
+									chất lượng, không đúng mô tả, hoặc giao trễ so với cam kết...
+									đơn hàng của Quý khách sẽ được hoàn lại và hủy trên hệ thống <strong>BookNest</strong>.
+									Nếu Quý khách đã thanh toán trước, số tiền sẽ được hoàn lại đầy
+									đủ, bao gồm phí vận chuyển, trong vòng 5 - 7 ngày làm việc.
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									Nếu đơn hàng có dấu hiệu hư hỏng bên ngoài như rách, móp, ướt,
+									thủng, mất niêm phong... Quý khách vui lòng kiểm tra kỹ trước
+									khi nhận hàng. Quý khách có quyền từ chối nhận hàng và liên hệ
+									<strong>BookNest</strong> qua hotline 0358768117 để được hỗ trợ
+									giao lại đơn hàng mới hoặc hủy đơn hàng, hoàn tiền.
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>Nếu Quý khách không có nhu cầu nhận hàng, vui lòng thông
+									báo với bên vận chuyển hoặc CSKH qua hotline 0358768117. Đơn
+									hàng sẽ được hoàn lại và hủy trên hệ thống. Trong trường hợp đã
+									thanh toán trước, số tiền sẽ được hoàn lại sau khi trừ đi chi
+									phí vận chuyển phát sinh.</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									<strong>BookNest</strong> sẽ thông báo ngay nếu có sự chậm trễ
+									trong giao hàng. Trong phạm vi pháp luật cho phép, chúng tôi
+									không chịu trách nhiệm cho bất kỳ tổn thất, thiệt hại hoặc chi
+									phí phát sinh do giao hàng trễ. Nếu Quý khách không còn nhu cầu
+									nhận hàng, <strong>BookNest</strong> sẽ hỗ trợ hủy đơn hàng và
+									hoàn lại toàn bộ số tiền (bao gồm phí vận chuyển) trong vòng 5
+									- 7 ngày làm việc.
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									Sản phẩm được đóng gói theo tiêu chuẩn của <strong>BookNest</strong>.
+									Nếu Quý khách có nhu cầu đóng gói đặc biệt, vui lòng báo trước
+									khi đặt hàng. Chúng tôi có thể tính thêm phí cho dịch vụ này.
+								</p>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<p>
+									Mọi thông tin thay đổi sản phẩm hoặc hủy đơn hàng, Quý khách
+									vui lòng thông báo sớm để <strong>BookNest</strong> có thể điều
+									chỉnh đơn hàng. Vui lòng liên hệ qua hotline 1900636467 hoặc
+									email <a href="mailto:cskh@hotro.booknest.vn">cskh@hotro.booknest.vn</a>.
+								</p>
+							</li>
+						</ul>
+						<h4>4. Tra cứu thông tin đơn hàng:</h4>
+						<p>
+							<strong>BookNest</strong> sử dụng dịch vụ giao hàng của các đối
+							tác vận chuyển để thực hiện giao đơn hàng đến Quý khách.
+						</p>
+
+						<p>Quý khách hoàn toàn có thể tự tra cứu thông tin lộ trình
+							vận chuyển đơn hàng bằng 02 cách sau:</p>
+
+						<ul>
+							<li>
+								<p>Truy cập trang web tra cứu thông tin của các đối tác vận
+									chuyển, nhập mã vận đơn để tra cứu.</p>
+							</li>
+							<li>
+								<p>
+									Liên hệ với bộ phận chăm sóc khách hàng của <strong>BookNest</strong>
+									qua hotline 0358768117 để được hỗ trợ tra cứu tình hình vận
+									chuyển đơn hàng.
+								</p>
+							</li>
+						</ul>
+
+						<p>
+							<strong>BookNest</strong> cung cấp địa chỉ website của các đối
+							tác vận chuyển để Quý khách tra cứu thông tin vận chuyển đơn
+							hàng:
+						</p>
+
+						<ul>
+							<li><strong>Công ty Cổ phần Chuyển phát nhanh
+									Snappy</strong></li>
+							<li><strong>Tổng Công ty Bưu Điện Việt Nam –
+									Vietnam Post</strong></li>
+							<li><strong>Công ty Cổ phần Dịch Vụ Tức Thời –
+									Ahamove</strong></li>
+							<li><strong>Công Ty TNHH Nin Sing Logistics (NINJA
+									VAN)</strong></li>
+						</ul>
+
+						<p>
+							<em>Chính sách này có hiệu lực từ ngày <strong>01/01/2025</strong>.
+							</em>
+						</p>
+
+
+
+
+					</div>
+				</div>
+				<!-- 				<div class="col-sm-6"> -->
+				<!-- 					<img title="cms-img" -->
+				<!-- 						src="https://dongphuc4mua.vn/wp-content/uploads/2018/05/banner-bai-viet-03-compressed.jpg" -->
+				<!-- 						alt="cms-img" class="img-responsive"> -->
+				<!-- 				</div> -->
+			</div>
+		</div>
+		</div>
+		</div>
+
+
+
+	</main>
+
+	<script>
+		$(document).ready(function() {
+			var headerfixed = 0;
+			if (headerfixed == 1) {
+				$(window).scroll(function() {
+					if ($(window).width() > 991) {
+						if ($(this).scrollTop() > 150) {
+							$(".header-bottom").addClass("header-fixed");
+						} else {
+							$(".header-bottom").removeClass("header-fixed");
+						}
+					} else {
+						$(".header-bottom").removeClass("header-fixed");
+					}
+				});
+			} else {
+				$(".header-bottom").removeClass("header-fixed");
+			}
+		});
+	</script>
+</body>
+</html>

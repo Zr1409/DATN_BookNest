@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Query Transaction</title>
+<!-- Bootstrap core CSS -->
+<link href="/assets/vnpay_assets/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/vnpay_assets/jumbotron-narrow.css" rel="stylesheet">
+<script src="/assets/vnpay_assets/jquery-1.11.3.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="header clearfix">
+			<h3 class="text-muted">VNPAY DEMO</h3>
+		</div>
+		<h3>Query Transaction</h3>
+		<div class="table-responsive">
+			<form th:action="@{/vnpay/query}" id="frmQuery" method="post">
+				<div class="form-group">
+					<label for="order_id">Mã giao dịch cần truy vấn
+						(vnp_TxnRef)</label> <input class="form-control" id="order_id"
+						name="order_id" type="text" />
+				</div>
+				<div class="form-group">
+					<label for="trans_date">Thời gian khởi tạo giao dịch
+						(vnp_CreateDate)</label> <input class="form-control" id="trans_date"
+						name="trans_date" type="text" placeholder="yyyyMMddHHmmss" />
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">Query</button>
+				</div>
+			</form>
+			<p>&nbsp;</p>
+			<footer class="footer">
+				<p>&copy; VNPAY 2020</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,731 @@
+
+<style>
+/* Font chữ */
+
+/* Biến màu sắc */
+:root {
+	--border-radius: 12px !important;
+	--box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Nút mở chat */
+.chat-button {
+	position: fixed !important;
+	border-radius: 12px !important;
+	bottom: 25px !important;
+	right: 25px !important;
+	background: blue !important;
+	color: white !important;
+	border: none !important;
+	padding: 12px 20px !important;
+	border-radius: 50px !important;
+	cursor: pointer !important;
+	font-size: 16px !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 500 !important;
+	box-shadow: var(--box-shadow) !important;
+	background: var(--secondary-hover-color) !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: 8px !important;
+	transition: all 0.3s ease !important;
+	z-index: 1000 !important;
+	display: flex !important;
+}
+
+.chat-button:hover {
+	background: #f38c61 !important;
+	transform: translateY(-2px) !important;
+}
+
+.chat-icon {
+	font-size: 18px !important;
+}
+
+/* Container chat */
+.chat-container {
+	position: fixed !important;
+	bottom: 20px !important;
+	right: 25px !important;
+	width: 350px !important;
+	height: 500px !important;
+	background: white !important;
+	border-radius: var(--border-radius) !important;
+	box-shadow: var(--box-shadow) !important;
+	display: flex !important;
+	flex-direction: column !important;
+	overflow: hidden !important;
+	z-index: 1000 !important;
+	font-family: 'Roboto', sans-serif !important;
+	transform: translateY(100%) !important;
+	opacity: 0 !important;
+	transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out
+		!important;
+}
+
+.chat-container.active {
+	transform: translateY(0) !important;
+	opacity: 1 !important;
+}
+
+/* Ẩn button khi chatbox mở */
+.chat-button {
+	transition: opacity 0.3s ease-in-out !important;
+}
+
+.chat-button.hidden {
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* Header */
+.chat-header {
+	background: rgb(201, 33, 39);
+	color: white !important;
+	padding: 5px !important; /* Giảm padding nếu cần */
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	color: white !important;
+}
+
+.chat-title {
+	display: flex !important;
+	align-items: center !important;
+	gap: 10px !important;
+}
+
+.chat-title h3 {
+	color: white !important;
+	margin: 0 !important;
+	font-weight: 500 !important;
+	font-size: 18px !important;
+	margin-left: 10px !important;
+}
+
+.ai-icon {
+	font-size: 20px !important;
+}
+
+.close-button {
+	background: transparent !important;
+	color: white !important;
+	border: none !important;
+	cursor: pointer !important;
+	padding: 5px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 50% !important;
+	transition: background 0.2s !important;
+}
+
+.close-button:hover {
+	background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Phần tin nhắn */
+.chat-messages {
+	flex: 1 !important;
+	padding: 15px !important;
+	overflow-y: auto !important;
+	background: #f5f7fb !important;
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 12px !important;
+}
+
+/* Style cho tin nhắn */
+.message {
+	max-width: 80% !important;
+	padding: 10px 15px !important;
+	border-radius: 18px !important;
+	line-height: 1.4 !important;
+	font-size: 14px !important;
+	position: relative !important;
+	animation: fadeIn 0.3s ease !important;
+}
+
+keyframes fadeIn {from { opacity:0!important;
+	transform: translateY(10px) !important;
+}
+
+to {
+	opacity: 1 !important;
+	transform: translateY(0) !important;
+}
+
+}
+
+/* Phần input */
+.chat-input-area {
+	padding: 15px !important;
+	background: white !important;
+	border-top: 1px solid #e9ecef !important;
+	display: flex !important;
+	gap: 10px !important;
+}
+
+.input-wrapper {
+	flex: 1 !important;
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+}
+
+#chatbox-input {
+	flex: 1 !important;
+	padding: 12px 15px !important;
+	border: 1px solid #e9ecef !important;
+	border-radius: var(--border-radius) !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 14px !important;
+	outline: none !important;
+	transition: border 0.3s !important;
+}
+
+#chatbox-input:focus {
+	border-color: var(--primary-color) !important;
+}
+
+.file-upload-button {
+	position: absolute !important;
+	right: 10px !important;
+	background: transparent !important;
+	border: none !important;
+	color: var(--primary-color);
+	cursor: pointer !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 5px !important;
+	border-radius: 50% !important;
+	transition: background 0.2s !important;
+}
+
+.file-upload-button:hover {
+	background: rgba(67, 97, 238, 0.1) !important;
+}
+
+#chatbox-file {
+	display: none !important;
+}
+
+.send-button {
+	background: var(--primary-color) !important;
+	color: white !important;
+	border: none !important;
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 50% !important;
+	cursor: pointer !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	transition: background 0.3s !important;
+	padding: 0 !important; /* Đảm bảo không có padding thừa */
+}
+
+.send-button svg {
+	width: 30px !important; /* Đảm bảo icon có kích thước hợp lý */
+	height: 30px !important;
+	display: block !important;
+	/* Tránh bị ảnh hưởng bởi khoảng trắng inline */
+}
+
+.send-button:hover {
+	background: var(--secondary-color) !important;
+}
+
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar {
+	width: 6px !important;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+	background: #f1f1f1 !important;
+	border-radius: 10px !important;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+	background: #c1c1c1 !important;
+	border-radius: 10px !important;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+	background: #a8a8a8 !important;
+}
+
+/* Ảnh upload */
+.uploaded-image {
+	max-width: 100% !important;
+	max-height: 150px !important;
+	border-radius: 8px !important;
+	margin-top: 5px !important;
+	border: 1px solid #e9ecef !important;
+}
+
+/* Responsive */
+@media ( max-width : 480px) {
+	.chat-container {
+		width: 100% !important;
+		height: 100% !important;
+		bottom: 0 !important;
+		right: 0 !important;
+		border-radius: 0 !important;
+	}
+	.chat-button {
+		bottom: 15px !important;
+		right: 15px !important;
+	}
+}
+
+.rounded-icon {
+	width: 40px !important; /* Kích thước ảnh */
+	height: 40px !important;
+	margin-left: 10px !important;
+	border-radius: 50% !important; /* Bo tròn ảnh */
+	object-fit: cover !important;
+	border-radius: 50% !important; /* Cắt ảnh vừa với khung tròn */
+}
+
+.chat-messages {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 8px !important; /* Khoảng cách giữa các tin nhắn */
+	padding: 10px !important;
+}
+
+/* Tin nhắn AI (bên trái) */
+.ai-wrapper {
+	display: flex;
+	align-items: flex-start !important; /* Canh phần tử về phía trên */
+	justify-content: flex-start !important; /* Đẩy tất cả về bên trái */
+	width: fit-content !important; /* Chỉ chiếm không gian cần thiết */
+}
+
+.ai-message {
+	background-color: #f1f1f1 !important;
+	color: black !important;
+	border-radius: 10px 10px 10px 0 !important;
+	padding: 5px 12px !important;
+	max-width: 70% !important;
+	display: inline-block !important;
+	word-wrap: break-word !important; /* Đảm bảo nội dung không bị tràn */
+}
+
+/* Tin nhắn User (bên phải, sát lề phải) */
+.user-wrapper {
+	display: flex !important;
+	justify-content: flex-end !important;
+}
+
+.user-message {
+	background-color: #007bff !important;
+	color: white !important;
+	border-radius: 10px 10px 0 10px !important;
+	padding: 8px 12px !important;
+	max-width: 70% !important;
+	text-align: left !important;
+	display: inline-block !important;
+	margin-right: 0 !important;
+	color: white !important; /* Đảm bảo sát lề phải */
+}
+
+/* Định dạng icon AI */
+.ai-icon {
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 50% !important;
+	margin-right: 0px !important;
+	/* Nếu vẫn chưa sát thì thử chỉnh về margin-right: 5px */
+}
+
+.voice-button {
+	background: transparent !important;
+	border: none !important;
+	color: var(--primary-color) !important;
+	cursor: pointer !important;
+	display: flex !important;
+	width: 40px !important;
+	height: 40px !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 50% !important;
+	transition: background 0.2s !important;
+	height: 40px !important;
+}
+
+.voice-button:hover {
+	background: #f38c61 !important;
+	color: white !important;
+}
+
+.voice-button svg {
+	width: 30px !important; /* Đảm bảo icon có kích thước hợp lý */
+	height: 30px !important;
+	display: block !important;
+	/* Tránh bị ảnh hưởng bởi khoảng trắng inline */
+}
+
+.chatbox-suggestions {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	gap: 5px !important;
+	padding: 10px !important;
+	background-color: #f8f8f8 !important;
+	flex-wrap: wrap !important;
+	position: relative !important;
+}
+
+.chatbox-suggestions button {
+	padding: 6px 12px !important;
+	background-color: #fff !important;
+	border: 1px solid #ccc !important;
+	border-radius: 5px !important;
+	cursor: pointer !important;
+	font-size: 14px !important;
+	transition: background 0.3s ease !important;
+}
+
+.chatbox-suggestions button:hover {
+	background-color: #e0e0e0 !important;
+}
+
+/* #emoji-button { */
+/*     background: none; */
+/*     border: none; */
+/*     font-size: 20px; */
+/*     cursor: pointer; */
+/*     margin-left:0px */
+/* } */
+
+/* .emoji-picker { */
+/*     display: none; */
+/*     position: absolute; */
+/*     bottom: 50px; */
+/*     left: 10px; */
+/*     background: white; */
+/*     border: 1px solid #ddd; */
+/*     padding: 10px; */
+/*     border-radius: 10px; */
+/*     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+/*     width: 250px; */
+/*     max-height: 200px; */
+/*     overflow-y: auto; */
+/*     z-index: 1000; */
+/* } */
+
+/* .emoji-picker span { */
+/*     font-size: 20px; */
+/*     cursor: pointer; */
+/*     padding: 5px; */
+/*     display: inline-block; */
+/*     width: 30px; */
+/*     text-align: center; */
+/* } */
+
+/* .emoji-picker span:hover { */
+/*     background: #f0f0f0; */
+/*     border-radius: 5px; */
+/* } */
+</style>
+
+<button id="open-chat" class="chat-button">
+	<span class="chat-icon">💬</span> Chat với chúng tôi
+</button>
+
+<div id="chatbox" class="chat-container">
+	<div class="chat-header">
+		<div class="chat-title">
+			<span class="ai-icon"> <img
+				src="/assets/images/imageProduct/icon_chatbox.jpg" alt="AI Icon"
+				width="40" height="40" class="rounded-icon">
+			</span>
+
+			<h3>Trợ lý ảo</h3>
+		</div>
+		<button id="close-chat" class="close-button">
+			<svg viewBox="0 0 24 24" width="20" height="20">
+        <path fill="currentColor"
+					d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+      </svg>
+		</button>
+	</div>
+	<!-- Thêm danh sách câu hỏi gợi ý -->
+
+	<!-- Phần hiển thị nội dung chat -->
+	<div id="chatbox-body" class="chat-messages">
+		<!-- Tin nhắn chat hiển thị ở đây -->
+
+		<!-- Gợi ý câu hỏi sẽ nằm trong body chat -->
+		<div id="chatbox-suggestions" class="chatbox-suggestions"></div>
+	</div>
+
+	<div class="chat-input-area">
+		<div class="input-wrapper">
+			<!-- 		<button id="emoji-button">😊</button> -->
+			<input type="text" id="chatbox-input" placeholder="Nhập tin nhắn..." />
+			<label for="chatbox-file" class="file-upload-button"> <svg
+					viewBox="0 0 24 24" width="24" height="24">
+          <path fill="currentColor"
+						d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+        </svg> <input type="file" id="chatbox-file" accept="image/*">
+			</label>
+		</div>
+
+		<button id="voice-search" class="voice-button">
+			<svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor"
+					d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3s-3 1.34-3 3v6c0 1.66 1.34 3 3 3zm6-3c0 3.31-2.69 6-6 6s-6-2.69-6-6H5c0 3.87 3.13 7 7 7v4h2v-4c3.87 0 7-3.13 7-7h-2z">
+        </path>
+    </svg>
+		</button>
+
+		<button id="chatbox-send" class="send-button">
+			<svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor" d="M12 4l-8 8h5v8h6v-8h5z">
+        </path>
+           </svg>
+		</button>
+
+
+		<!-- 	<div id="emoji-picker" class="emoji-picker"> -->
+		<!-- 			<!-- Bảng chọn emoji sẽ hiển thị ở đây -->
+		<!-- 		</div> -->
+	</div>
+</div>
+
+<script>
+// Mở/đóng chat
+const openChatBtn = document.getElementById('open-chat');
+const chatbox = document.getElementById('chatbox');
+const closeChatBtn = document.getElementById('close-chat');
+//Kiểm tra trạng thái chatbox khi tải lại trang
+// document.addEventListener("DOMContentLoaded", function () {
+//   if (localStorage.getItem("chatbox_open") === "true") {
+//     chatbox.classList.add('active');  // Hiện chatbox
+//     openChatBtn.classList.add('hidden'); // Ẩn nút chat
+//   }
+// });
+
+openChatBtn.addEventListener('click', function() {
+  chatbox.classList.add('active');  // Hiện chatbox
+  openChatBtn.classList.add('hidden'); // Ẩn nút chat
+  //localStorage.setItem("chatbox_open", "true"); // Lưu trạng thái
+});
+
+closeChatBtn.addEventListener('click', function() {
+  chatbox.classList.remove('active'); // Ẩn chatbox
+  //localStorage.setItem("chatbox_open", "false"); // Lưu trạng thái
+  //document.getElementById('chatbox-body').innerHTML = ''; // Xóa nội dung chat
+  
+  setTimeout(() => {
+    openChatBtn.classList.remove('hidden'); // Hiện lại button sau khi đóng
+  }, 400); // Trễ theo thời gian transition
+});
+
+
+// Hiển thị tin nhắn
+document.getElementById('chatbox-send').addEventListener('click', sendMessage);
+document.getElementById('chatbox-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+});
+document.getElementById('chatbox-file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        // Hiển thị ảnh trước khi gửi lên server
+        addMessage(`<img src="${event.target.result}" class="uploaded-image" alt="Uploaded image">`, true);
+    };
+    reader.readAsDataURL(file);
+});
+
+
+function sendMessage() {
+    const input = document.getElementById('chatbox-input');
+    const message = input.value.trim();
+    const fileInput = document.getElementById('chatbox-file');
+    const file = fileInput.files[0];
+
+    if (!message && !file) return;
+
+    const formData = new FormData();
+    formData.append("message", message);
+    if (file) formData.append("image", file);
+
+    addMessage(message, true);
+    
+    fetch('/rest/chatbox', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        addMessage(data.reply || "Xin lỗi, tôi không hiểu câu hỏi của bạn.", false);
+    })
+    .catch(error => {
+        addMessage("Có lỗi xảy ra khi kết nối với server.", false);
+        console.error('Error:', error);
+    });
+
+    input.value = '';
+    fileInput.value = ''; // Reset input file
+}
+
+
+function addMessage(content, isUser) {
+    const chatBody = document.getElementById('chatbox-body');
+    const wrapperDiv = document.createElement('div');
+    wrapperDiv.className = `message-wrapper ${isUser ? 'user-wrapper' : 'ai-wrapper'}`;
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+    messageDiv.innerHTML = `<span>${content}</span>`;
+
+    if (isUser) {
+        wrapperDiv.appendChild(messageDiv); // Tin nhắn user nằm bên phải
+    } else {
+        const aiIcon = document.createElement('img');
+        aiIcon.src = "/assets/images/imageProduct/icon.png";
+        aiIcon.alt = "AI Icon";
+        aiIcon.className = "ai-icon";
+        
+        wrapperDiv.appendChild(aiIcon); // Icon AI bên trái
+        wrapperDiv.appendChild(messageDiv); // Tin nhắn AI bên phải icon
+    }
+
+    chatBody.appendChild(wrapperDiv);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+
+// Tìm kiếm bằng giọng nói
+// Kiểm tra trình duyệt có hỗ trợ Web Speech API không
+const voiceButton = document.getElementById('voice-search');
+const chatInput = document.getElementById('chatbox-input');
+const sendButton = document.getElementById('chatbox-send');
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'vi-VN'; // Ngôn ngữ tiếng Việt
+    recognition.interimResults = false; // Không hiển thị kết quả tạm thời
+    recognition.continuous = false; // Không nhận diện liên tục
+
+    voiceButton.addEventListener('click', () => {
+        recognition.start(); // Bắt đầu nhận diện giọng nói
+    });
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript; // Điền kết quả vào ô nhập chat
+        sendButton.click(); // Tự động gửi tin nhắn
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Lỗi nhận diện giọng nói:', event.error);
+    };
+} else {
+    console.warn('Trình duyệt không hỗ trợ Web Speech API');
+    voiceButton.style.display = 'none'; // Ẩn nút nếu không hỗ trợ
+}
+
+//Danh sách câu hỏi gợi ý
+document.addEventListener("DOMContentLoaded", function () {
+    const suggestionsContainer = document.getElementById("chatbox-suggestions");
+    const chatInput = document.getElementById("chatbox-input");
+    const sendButton = document.getElementById("chatbox-send");
+   
+    const suggestedQuestions = [    
+        { question: "Làm sao để mua sách trên website?", answer: "Bạn có thể mua sách trên website theo các bước sau: <br>" +
+            "1️⃣ Tìm sách yêu thích bằng cách sử dụng thanh tìm kiếm hoặc bộ lọc theo thể loại, tác giả.<br>" +
+            "2️⃣ Thêm sách vào giỏ hàng: Nhấn vào nút “Thêm vào giỏ hàng” để đưa sách vào giỏ. Nếu muốn mua nhiều cuốn, có thể tăng số lượng trong giỏ hàng. Nhập mã giảm giá (nếu có) để được ưu đãi. Sau đó chọn thanh toán.<br>" +
+            "3️⃣ Nhập địa chỉ giao hàng: Sử dụng địa chỉ có sẵn hoặc có thể thêm địa chỉ giao hàng mới.<br>" +
+            "4️⃣ Chọn phương thức thanh toán: Chọn phương thức thanh toán phù hợp: Thanh toán khi nhận hàng (COD), chuyển khoản ngân hàng, ví điện tử (MoMo, ZaloPay, VNPay, v.v.)<br>" +
+            "5️⃣ Xác nhận đơn hàng, hoàn tất thanh toán và chờ nhận sách trong 2-3 ngày làm việc.<br>" +
+            "📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"},
+        { question: "Có hình thức thanh toán nào?", answer: "Chúng tôi hỗ trợ thanh toán qua thẻ ngân hàng, ví điện tử và COD (thanh toán khi nhận hàng).<br>" +
+            "📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"},
+        { question: "Thời gian giao hàng bao lâu?", answer: "Thông thường, đơn hàng sẽ đến tay bạn trong 3-5 ngày làm việc, tùy vào khu vực. Đối với các thành phố lớn, có thể nhận hàng sớm hơn chỉ trong 1-2 ngày! <br>"+
+            "📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"},
+        { question: "Chính sách đổi trả sách như thế nào?", answer: "Nếu sách bị lỗi in ấn, hư hỏng trong quá trình vận chuyển hoặc giao nhầm, bạn có thể đổi trả trong vòng 7 ngày. Hãy liên hệ ngay với chúng tôi qua số điện thoại 0358768117 để được hỗ trợ nhanh chóng! <br>"+
+            "📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"},  
+        { question: "Shop có ưu đãi nào khi mua sách không?",   answer: "Có chứ! Khi bạn đăng ký tài khoản lần đầu, sẽ nhận ngay mã giảm giá. Ngoài ra, khách hàng thân thiết tích lũy đủ 3 đơn hàng sẽ được tặng mã giảm giá hấp dẫn! <br>"+
+            "📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"},
+        { question: "Làm sao để theo dõi đơn hàng của tôi?", answer: "Bạn có thể kiểm tra trạng thái đơn hàng trong mục 'Tài khoản', thông tin, xem lịch sử đơn hàng khi đăng nhập tài khoản hoặc có thể theo dõi qua email của khách hàng. <br>"+
+        	"📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"},
+        { question: "Shop có những thể loại sách nào hay?", answer: "Chúng tôi có đa dạng thể loại sách như: văn học, khoa học, kinh tế, phát triển bản thân, truyện tranh, tiểu thuyết, sách giáo khoa và nhiều thể loại khác. Bạn có thể sử dụng bộ lọc trên website để tìm sách theo thể loại, tác giả hoặc nhà xuất bản! <br>"+
+        	"📚 Chúc bạn có những trải nghiệm mua sách tuyệt vời tại BookNest Shop!"}
+    ];    	
+    // Hiển thị danh sách câu hỏi gợi ý trong khung chat
+    suggestedQuestions.forEach(item => {
+        const button = document.createElement("button");
+        button.textContent = item.question; // Chỉ hiển thị câu hỏi
+
+        button.onclick = function () {
+            //chatInput.value = item.question; // Đưa câu hỏi vào ô nhập chat
+            addMessage(item.answer, false); // Hiển thị câu trả lời có sẵn ngay lập tức
+        };
+
+        suggestionsContainer.appendChild(button);
+    });
+//     // Hiển thị danh sách câu hỏi gợi ý trong khung chat
+//     suggestedQuestions.forEach(question => {
+//         const button = document.createElement("button");
+//         button.textContent = question;
+//         button.onclick = function () {
+//             chatInput.value = question;
+//             sendButton.click(); // Gửi tin nhắn tự động
+//         };
+//         suggestionsContainer.appendChild(button);
+//     });
+});
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const emojiButton = document.getElementById("emoji-button");
+//     const emojiPicker = document.getElementById("emoji-picker");
+//     const chatInput = document.getElementById("chatbox-input");
+
+//     // Danh sách emoji mở rộng
+//     const emojiList = [
+//         "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆", "😉", "😊", "😋", "😎", "😍", "😘", "🥰", "😗", "😙", "😚",
+//         "🙂", "🤗", "🤩", "🤔", "🤨", "😐", "😑", "😶", "🙄", "😏", "😣", "😥", "😮", "🤐", "😯", "😪", "😫", "🥱",
+//         "😴", "😌", "🤤", "😛", "😜", "🤪", "😝", "🤑", "🤠", "😈", "👻", "💀", "☠️", "🤡", "👽", "🤖", "💩", "😺",
+//         "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "😾", "👋", "🤚", "🖐️", "✋", "🖖", "👌", "🤌", "🤏", "✌️", "🤞",
+//         "🤟", "🤘", "🤙", "👈", "👉", "👆", "👇", "👍", "👎", "✊", "👊", "🤛", "🤜", "👏", "🙌", "👐", "🤲", "🤝",
+//         "🙏", "💪", "🦾", "🦿", "🦵", "🦶", "👣", "👀", "👁️", "👃", "🧠", "🦷", "🦴", "👅", "👄", "💋", "💘", "💝",
+//         "💖", "💗", "💓", "💞", "💕", "💟", "❣️", "💔", "❤️", "🧡", "💛", "💚", "💙", "💜", "🤎", "🖤", "🤍", "💯",
+//         "💢", "💥", "💨", "💦", "🕳️", "💣", "💬", "🗯️", "🗨️", "💭"
+//     ];
+
+//     // Tạo danh sách emoji
+//     emojiList.forEach(emoji => {
+//         const span = document.createElement("span");
+//         span.textContent = emoji;
+//         span.onclick = function () {
+//             chatInput.value += emoji; // Chèn emoji vào ô nhập
+//         };
+//         emojiPicker.appendChild(span);
+//     });
+
+//     // Hiện/ẩn bảng emoji khi bấm nút
+//     emojiButton.addEventListener("click", function (event) {
+//         event.stopPropagation();  // Ngừng lan truyền sự kiện để không ẩn bảng emoji
+//         emojiPicker.style.display = emojiPicker.style.display === "block" ? "none" : "block";
+//     });
+
+//     // Ẩn bảng emoji khi bấm ra ngoài
+//     document.addEventListener("click", function () {
+//         emojiPicker.style.display = "none";
+//     });
+
+//     // Ngăn bảng emoji bị ẩn khi nhấn vào chính nó
+//     emojiPicker.addEventListener("click", function (event) {
+//         event.stopPropagation();  // Ngừng lan truyền khi click vào emoji picker
+//     });
+// });
+
+
+</script>
