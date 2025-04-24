@@ -213,105 +213,70 @@ public class CheckOutController {
 			int price = book.getSales() != 0 ? book.getSales() : book.getPrice();
 			int quantity = cart.getQuantity();
 			int total = price * quantity;
-
-			tableRows.append("""
-					    <tr>
-					        <td style='padding: 8px; border: 1px solid #ddd;'>%s</td>
-					        <td style='padding: 8px; border: 1px solid #ddd;'>%s</td>
-					        <td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>%d</td>
-					        <td style='padding: 8px; border: 1px solid #ddd; text-align: right;'>%,d</td>
-					        <td style='padding: 8px; border: 1px solid #ddd; text-align: right;'>%,d</td>
-					    </tr>
-					""".formatted(book.getName(), book.getCode(), quantity, price, total));
+			tableRows.append(String.format("<tr>" + "    <td style='padding: 8px; border: 1px solid #ddd;'>%s</td>"
+					+ "    <td style='padding: 8px; border: 1px solid #ddd;'>%s</td>"
+					+ "    <td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>%d</td>"
+					+ "    <td style='padding: 8px; border: 1px solid #ddd; text-align: right;'>%,d</td>"
+					+ "    <td style='padding: 8px; border: 1px solid #ddd; text-align: right;'>%,d</td>" + "</tr>",
+					book.getName(), // %s - tên sách
+					book.getCode(), // %s - mã sách
+					quantity, // %d - số lượng
+					price, // %,d - giá tiền
+					total // %,d - thành tiền
+			));
 		}
-
-		String emailContent = """
-				    <html>
-				    <head>
-				        <style>
-				            body { font-family: Arial, sans-serif; }
-				            .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }
-				            .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
-				            .section { margin: 20px 0; }
-				            .highlight { color: #e67e22; font-weight: bold; }
-				            .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }
-				            table { width: 100%%; border-collapse: collapse; margin-top: 10px; }
-				            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-				            th { background-color: #f9f9f9; }
-				        </style>
-				    </head>
-				    <body>
-				        <div class='container'>
-				        <div style='text-align:center; margin-bottom:20px;'>
-						<img style='width: 65%%' src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo'/>
-						</div>
-
-				            <div class='title'>Thông Tin Đơn Hàng</div>
-				            <div class='section'>
-				                <p>Xin chào <span class='highlight'>%s</span>,</p>
-				                <p>Bạn đã đặt hàng thành công. Dưới đây là thông tin đơn hàng:</p>
-				            </div>
-				            <div class='section'>
-				                <p><strong>Mã đơn hàng:</strong> %s</p>
-				                <p><strong>Ngày đặt hàng:</strong> %s</p>
-				                <p><strong>Phương thức thanh toán:</strong> %s</p>
-				                <p><strong>Ghi chú:</strong> %s</p>
-				            </div>
-				            <div class='section'>
-				                <p><strong>Người nhận:</strong> %s</p>
-				                <p><strong>Địa chỉ giao hàng:</strong><br> %s, %s, %s, %s</p>
-				            </div>
-				            <div class='section'>
-				                <table>
-				                    <thead>
-				                        <tr>
-				                            <th>Tên sản phẩm</th>
-				                            <th>Mã sản phẩm</th>
-				                            <th>Số lượng</th>
-				                            <th>Giá tiền</th>
-				                            <th>Thành tiền</th>
-				                        </tr>
-				                    </thead>
-				                    <tbody>
-				                        %s
-				                    </tbody>
-				                </table>
-				            </div>
-				            <div class='section'>
-				                <p><strong>Phí vận chuyển:</strong> %,d VND</p>
-				                %s
-				                <p><strong>Tổng cộng:</strong> <span class='highlight'>%,d VND</span></p>
-				            </div>
-				            <div class='section'>
-				                <p>Xem chi tiết đơn hàng tại: <a href='http://localhost:8080/account/order/invoice/%s'>link chi tiết</a></p>
-				            </div>
-				            <div class='section'>
-				                <p>Cảm ơn bạn đã mua hàng tại <strong>BookNest</strong>!</p>
-				            </div>
-				            <div class='footer'>
-					                Trân trọng,<br>
-					                BookNest Shop
-					        </div>
-				        </div>
-				    </body>
-				    </html>
-				"""
-				.formatted(address.getUser().getFullname(), // tên người nhận
-						code, // mã đơn hàng
-						formattedDate, // ngày
-						order.getMethod(), // phương thức thanh toán
-						(comment != null && !comment.trim().isEmpty()) ? comment : "Không có", // ghi chú
-						address.getUser().getFullname(), // người nhận
-						address.getDetail(), address.getWard(), address.getDistrict(), address.getProvince(),
-						tableRows.toString(), // bảng sách
-						shippingFee, // phí ship
-						(discount != null
-								? "<p><strong>Giảm giá:</strong> -" + String.format("%,d", (int) discountAmount)
-										+ " VND</p>"
-								: ""),
-						orderTotal, // tổng tiền
-						code // link chi tiết
-				);
+		String emailTemplate = "<html>" + "<head>" + "    <style>" + "        body { font-family: Arial, sans-serif; }"
+				+ "        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }"
+				+ "        .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }"
+				+ "        .section { margin: 20px 0; }" + "        .highlight { color: #e67e22; font-weight: bold; }"
+				+ "        .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }"
+				+ "        table { width: 100%%; border-collapse: collapse; margin-top: 10px; }"
+				+ "        th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }"
+				+ "        th { background-color: #f9f9f9; }" + "    </style>" + "</head>" + "<body>"
+				+ "    <div class='container'>" + "        <div style='text-align:center; margin-bottom:20px;'>"
+				+ "            <img style='width: 65%%' src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo'/>"
+				+ "        </div>" + "        <div class='title'>Thông Tin Đơn Hàng</div>"
+				+ "        <div class='section'>" + "            <p>Xin chào <span class='highlight'>%s</span>,</p>"
+				+ "            <p>Bạn đã đặt hàng thành công. Dưới đây là thông tin đơn hàng:</p>" + "        </div>"
+				+ "        <div class='section'>" + "            <p><strong>Mã đơn hàng:</strong> %s</p>"
+				+ "            <p><strong>Ngày đặt hàng:</strong> %s</p>"
+				+ "            <p><strong>Phương thức thanh toán:</strong> %s</p>"
+				+ "            <p><strong>Ghi chú:</strong> %s</p>" + "        </div>" + "        <div class='section'>"
+				+ "            <p><strong>Người nhận:</strong> %s</p>"
+				+ "            <p><strong>Địa chỉ giao hàng:</strong><br> %s, %s, %s, %s</p>" + "        </div>"
+				+ "        <div class='section'>" + "            <table>" + "                <thead>"
+				+ "                    <tr>" + "                        <th>Tên sản phẩm</th>"
+				+ "                        <th>Mã sản phẩm</th>" + "                        <th>Số lượng</th>"
+				+ "                        <th>Giá tiền</th>" + "                        <th>Thành tiền</th>"
+				+ "                    </tr>" + "                </thead>" + "                <tbody>"
+				+ "                    %s" + "                </tbody>" + "            </table>" + "        </div>"
+				+ "        <div class='section'>" + "            <p><strong>Phí vận chuyển:</strong> %,d VND</p>"
+				+ "            %s"
+				+ "            <p><strong>Tổng cộng:</strong> <span class='highlight'>%,d VND</span></p>"
+				+ "        </div>" + "        <div class='section'>"
+				+ "            <p>Xem chi tiết đơn hàng tại: <a href='http://localhost:8080/account/order/invoice/%s'>link chi tiết</a></p>"
+				+ "        </div>" + "        <div class='section'>"
+				+ "            <p>Cảm ơn bạn đã mua hàng tại <strong>BookNest</strong>!</p>" + "        </div>"
+				+ "        <div class='footer'>" + "            Trân trọng,<br>" + "            BookNest Shop"
+				+ "        </div>" + "    </div>" + "</body>" + "</html>";
+		String emailContent = String.format(emailTemplate, address.getUser().getFullname(), // %s - Tên người nhận
+				code, // %s - Mã đơn hàng
+				formattedDate, // %s - Ngày đặt
+				order.getMethod(), // %s - Phương thức thanh toán
+				(comment != null && !comment.trim().isEmpty()) ? comment : "Không có", // %s - Ghi chú
+				address.getUser().getFullname(), // %s - Người nhận
+				address.getDetail(), // %s
+				address.getWard(), // %s
+				address.getDistrict(), // %s
+				address.getProvince(), // %s
+				tableRows.toString(), // %s - Dòng sản phẩm HTML
+				shippingFee, // %,d - Phí ship
+				(discount != null
+						? "<p><strong>Giảm giá:</strong> -" + String.format("%,d", (int) discountAmount) + " VND</p>"
+						: ""), // %s - Dòng giảm giá (nếu có)
+				orderTotal, // %,d - Tổng tiền
+				code // %s - Mã đơn cho link chi tiết
+		);
 
 		// Gửi mail
 		mailerService.queue(address.getUser().getEmail(), "Xác nhận đơn hàng #" + code + " tại BookNest", emailContent);
@@ -479,89 +444,46 @@ public class CheckOutController {
 						int quantity = orderDetail.getQuantity();
 						int total = price * quantity;
 
-						tableRows.append(String.format("""
-								    <tr>
-								        <td style='padding: 8px; border: 1px solid #ddd;'>%s</td>
-								        <td style='padding: 8px; border: 1px solid #ddd;'>%s</td>
-								        <td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>%d</td>
-								        <td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>%,d</td>
-								        <td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>%,d</td>
-								    </tr>
-								""", book.getName(), book.getCode(), quantity, price, total));
+						tableRows.append(String.format("<tr>"
+								+ "<td style='padding: 8px; border: 1px solid #ddd;'>%s</td>"
+								+ "<td style='padding: 8px; border: 1px solid #ddd;'>%s</td>"
+								+ "<td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>%d</td>"
+								+ "<td style='padding: 8px; border: 1px solid #ddd; text-align: right;'>%,d VND</td>"
+								+ "<td style='padding: 8px; border: 1px solid #ddd; text-align: right;'>%,d VND</td>"
+								+ "</tr>", book.getName(), book.getCode(), quantity, price, total));
 					}
 
-					String emailContent = String.format(
-							"""
-									    <html>
-									    <head>
-									        <style>
-									            body { font-family: Arial, sans-serif; }
-									            .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }
-									            .title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
-									            .section { margin: 20px 0; }
-									            .highlight { color: #e67e22; font-weight: bold; }
-									            .footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }
-									            table { width: 100%%; border-collapse: collapse; margin-top: 10px; }
-									            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-									            th { background-color: #f9f9f9; }
-									        </style>
-									    </head>
-									    <body>
-									        <div class='container'>
-									        <div style='text-align:center; margin-bottom:20px;'>
-									            <img style='width: 65%%' src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo'/>
-									        </div>
-									            <div class='title'>Thông Tin Đơn Hàng</div>
-									            <div class='section'>
-									                <p>Xin chào <span class='highlight'>%s</span>,</p>
-									                <p>Bạn đã đặt hàng thành công. Dưới đây là thông tin đơn hàng:</p>
-									            </div>
-									            <div class='section'>
-									                <p><strong>Mã đơn hàng:</strong> %s</p>
-									                <p><strong>Ngày đặt hàng:</strong> %s</p>
-									                <p><strong>Phương thức thanh toán:</strong> %s</p>
-									                <p><strong>Ghi chú:</strong> %s</p>
-									            </div>
-									            <div class='section'>
-									                <p><strong>Người nhận:</strong> %s</p>
-									                <p><strong>Địa chỉ giao hàng:</strong><br> %s, %s, %s, %s</p>
-									            </div>
-									            <div class='section'>
-									                <table>
-									                    <thead>
-									                        <tr>
-									                            <th>Tên sản phẩm</th>
-									                            <th>Mã sản phẩm</th>
-									                            <th>Số lượng</th>
-									                            <th>Giá tiền</th>
-									                            <th>Thành tiền</th>
-									                        </tr>
-									                    </thead>
-									                    <tbody>
-									                        %s
-									                    </tbody>
-									                </table>
-									            </div>
-									            <div class='section'>
-									                <p><strong>Phí vận chuyển:</strong> %,d VND</p>
-									                %s
-									                <p><strong>Tổng cộng:</strong> <span class='highlight'>%,d VND</span></p>
-									            </div>
-									            <div class='section'>
-									                <p>Xem chi tiết đơn hàng tại: <a href='http://localhost:8080/account/order/invoice/%s'>link chi tiết</a></p>
-									            </div>
-									            <div class='section'>
-									                <p>Cảm ơn bạn đã mua hàng tại <strong>BookNest</strong>!</p>
-									            </div>
-									             <div class='footer'>
-									            Trân trọng,<br>
-									            BookNest Shop
-									        </div>
-									        </div>
-									    </body>
-									    </html>
-									""",
-							fullname, code, formattedDate, order.getMethod(),
+					String emailContent = String.format("<html>" + "<head>" + "<style>"
+							+ "body { font-family: Arial, sans-serif; }"
+							+ ".container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }"
+							+ ".title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }"
+							+ ".section { margin: 20px 0; }" + ".highlight { color: #e67e22; font-weight: bold; }"
+							+ ".footer { margin-top: 30px; font-size: 14px; color: #888; text-align: left; }"
+							+ "table { width: 100%%; border-collapse: collapse; margin-top: 10px; }"
+							+ "th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }"
+							+ "th { background-color: #f9f9f9; }" + "</style>" + "</head>" + "<body>"
+							+ "<div class='container'>" + "<div style='text-align:center; margin-bottom:20px;'>"
+							+ "<img style='width: 65%%' src='https://i.imgur.com/d3bqyiq.png' alt='BookNest Logo'/>"
+							+ "</div>" + "<div class='title'>Thông Tin Đơn Hàng</div>" + "<div class='section'>"
+							+ "<p>Xin chào <span class='highlight'>%s</span>,</p>"
+							+ "<p>Bạn đã đặt hàng thành công. Dưới đây là thông tin đơn hàng:</p>" + "</div>"
+							+ "<div class='section'>" + "<p><strong>Mã đơn hàng:</strong> %s</p>"
+							+ "<p><strong>Ngày đặt hàng:</strong> %s</p>"
+							+ "<p><strong>Phương thức thanh toán:</strong> %s</p>"
+							+ "<p><strong>Ghi chú:</strong> %s</p>" + "</div>" + "<div class='section'>"
+							+ "<p><strong>Người nhận:</strong> %s</p>"
+							+ "<p><strong>Địa chỉ giao hàng:</strong><br> %s, %s, %s, %s</p>" + "</div>"
+							+ "<div class='section'>" + "<table>" + "<thead>" + "<tr>" + "<th>Tên sản phẩm</th>"
+							+ "<th>Mã sản phẩm</th>" + "<th>Số lượng</th>" + "<th>Giá tiền</th>" + "<th>Thành tiền</th>"
+							+ "</tr>" + "</thead>" + "<tbody>%s</tbody>" + "</table>" + "</div>"
+							+ "<div class='section'>" + "<p><strong>Phí vận chuyển:</strong> %,d VND</p>" + "%s"
+							+ "<p><strong>Tổng cộng:</strong> <span class='highlight'>%,d VND</span></p>" + "</div>"
+							+ "<div class='section'>"
+							+ "<p>Xem chi tiết đơn hàng tại: <a href='http://localhost:8080/account/order/invoice/%s'>link chi tiết</a></p>"
+							+ "</div>" + "<div class='section'>"
+							+ "<p>Cảm ơn bạn đã mua hàng tại <strong>BookNest</strong>!</p>" + "</div>"
+							+ "<div class='footer'>Trân trọng,<br>BookNest Shop</div>" + "</div>" + "</body>"
+							+ "</html>", fullname, code, formattedDate, order.getMethod(),
 							(comment != null && !comment.trim().isEmpty()) ? comment : "Không có", fullname,
 							address.getDetail(), address.getWard(), address.getDistrict(), address.getProvince(),
 							tableRows.toString(), shippingFee,
