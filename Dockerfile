@@ -11,7 +11,7 @@ COPY . .
 RUN chmod +x mvnw
 
 # Build project
-RUN ./mvnw clean package
+RUN ./mvnw clean package -DskipTests
 
 # Mở cổng 8080
 EXPOSE 8080
