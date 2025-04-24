@@ -18,5 +18,6 @@ RUN ./mvnw clean package -DskipTests -X
 EXPOSE 8080
 
 # Chạy ứng dụng
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "target/PS36614_DATN-0.0.1-SNAPSHOT.jar"]
+
 
