@@ -20,12 +20,6 @@ import poly.store.entity.User;
 import poly.store.model.UserRegister;
 import poly.store.service.UserService;
 
-/**
- * Class bat loi form register.html
- * 
- * @author khoa-ph
- * @version 1.00
- */
 @Component
 public class RegisterFormValidator implements Validator {
 

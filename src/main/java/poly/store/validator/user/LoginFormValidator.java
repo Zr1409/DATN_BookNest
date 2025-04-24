@@ -19,18 +19,15 @@ import poly.store.entity.User;
 import poly.store.model.UserLogin;
 import poly.store.service.UserService;
 
-/**
- * Class bat loi form login.html
- * 
- * @author khoa-ph
- * @version 1.00
- */
 @Component
 public class LoginFormValidator implements Validator {
 	
 	// Class cung cap cac ham lam viec voi bang User trong database
 	@Autowired	
 	UserService userService;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	/**
 	 * Lien ket class UserLogin voi class bat loi

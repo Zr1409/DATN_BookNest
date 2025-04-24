@@ -38,6 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	// Thong tin role service
 	@Autowired
 	private RoleService roleService;
@@ -72,7 +74,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				grandList.add(authority);
 			}
 		}
-		String password = appUser.getPassword();
+		String password = pe.encode(appUser.getPassword());
 		UserDetails userDetails = (UserDetails) new User(appUser.getEmail(), password, grandList);
 		
 		return userDetails;

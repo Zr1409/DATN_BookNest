@@ -100,6 +100,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 * 
 	 * @return phuong thuc ma hoa
 	 */
+	@Bean
+	public BCryptPasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
