@@ -130,7 +130,8 @@
 		</div>
 		<div class="pull-right">
 			<a th:href="@{/shop/cart/checkout}" class="btn btn-primary"
-				th:classappend="${cart.map.isEmpty()?'disabled':''}">Thanh toán</a>
+				th:classappend="${cart.count == 0 ? 'disabled' : ''}">Thanh toán</a>
+
 		</div>
 	</div>
 </div>

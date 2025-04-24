@@ -198,10 +198,10 @@ public class CheckOutController {
 			int orderTotal = tolal() + shippingFee - (int) discountAmount;
 			//String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 			// Cách 1: Tự lấy domain, hoạt động cả local và production
-			//String baseUrl = request.getScheme() + "://" + request.getServerName()
-	        //+ (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort());
+			String baseUrl = request.getScheme() + "://" + request.getServerName()
+	        + (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort());
 		    // Cách 2 (an toàn khi deploy): Hard-code domain thật
-		     String baseUrl = "https://datn-booknest.onrender.com";
+		    // String baseUrl = "https://datn-booknest.onrender.com";
 			
 			String vnpayUrl = vnpayService.payment(request, orderTotal, "Thanh toán đơn hàng" + code, baseUrl);
 			return "redirect:" + vnpayUrl;
