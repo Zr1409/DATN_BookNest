@@ -18,5 +18,5 @@ RUN ./mvnw clean package -DskipTests -X
 EXPOSE 8080
 
 # Chạy ứng dụng
-CMD ["java", "-jar", "target/DATN_BookNest-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
 
