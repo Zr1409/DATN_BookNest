@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,6 +77,10 @@ public class RegisterController {
 
 	@Autowired
 	DiscountDao discountDao;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 
 
 	/**
@@ -184,7 +189,9 @@ public class RegisterController {
 				User user = new User();
 				user.setEmail(userRegister.getEmail());
 				user.setFullname(userRegister.getFullName());
-				user.setPassword(userRegister.getPassword());
+				String hashedPassword = passwordEncoder.encode(userRegister.getPassword());
+				user.setPassword(hashedPassword);
+				//user.setPassword(userRegister.getPassword());
 				user.setCreateday(timestamp.toString());
 				user.setSubscribe(userRegister.getSubscribe());
 				userService.save(user);

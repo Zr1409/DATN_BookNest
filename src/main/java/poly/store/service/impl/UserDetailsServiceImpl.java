@@ -1,11 +1,4 @@
-/**
- * @(#)UserDetailsServiceImpl.java 2021/09/09
- * 
- * Copyright(C) 2021 by PHOENIX FIVE
- * 
- * Last_Update 2021/09/09
- * Version 1.00.
- */
+
 package poly.store.service.impl;
 
 import java.util.ArrayList;
@@ -29,9 +22,6 @@ import org.springframework.security.core.userdetails.User;
 
 /**
  * Class dung de phan quyen cho project
- * 
- * @author khoa-ph
- * @version 1.00
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -77,9 +67,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				grandList.add(authority);
 			}
 		}
-		String password = pe.encode(appUser.getPassword());
-		UserDetails userDetails = (UserDetails) new User(appUser.getEmail(), password, grandList);
-		
+		//String password = pe.encode(appUser.getPassword());
+		//UserDetails userDetails = (UserDetails) new User(appUser.getEmail(), password, grandList);
+		String password = appUser.getPassword(); // KHÔNG mã hoá lại
+		UserDetails userDetails = new User(appUser.getEmail(), password, grandList);
+
 		return userDetails;
 	}
 

@@ -1,11 +1,4 @@
-/**
- * @(#)RegisterFormValidator.java 2021/09/08.
- * 
- * Copyright(C) 2021 by PHOENIX TEAM.
- * 
- * Last_Update 2021/09/08.
- * Version 1.00.
- */
+
 package poly.store.validator.user;
 
 import org.apache.commons.validator.routines.EmailValidator;
@@ -32,9 +25,6 @@ public class RegisterFormValidator implements Validator {
 	private EmailValidator emailValidator = EmailValidator.getInstance();
 	/**
 	 * Lien ket class UserLogin voi class bat loi
-	 * 
-	 * @param clazz
-	 * @return Ket qua co dung hay khong
 	 */
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -43,9 +33,6 @@ public class RegisterFormValidator implements Validator {
 
 	/**
 	 * Kiem tra form co thoa dieu kien
-	 * 
-	 * @param target
-	 * @param errors
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {

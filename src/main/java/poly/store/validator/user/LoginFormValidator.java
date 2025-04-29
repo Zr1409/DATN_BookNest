@@ -1,11 +1,4 @@
-/**
- * @(#)LoginFormValidator.java 2021/09/09.
- * 
- * Copyright(C) 2021 by PHOENIX TEAM.
- * 
- * Last_Update 2021/09/09.
- * Version 1.00.
- */
+
 package poly.store.validator.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +36,6 @@ public class LoginFormValidator implements Validator {
 	/**
 	 * Kiem tra form co thoa dieu kien
 	 * 
-	 * @param target
-	 * @param errors
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
@@ -72,10 +63,10 @@ public class LoginFormValidator implements Validator {
 			} else {
 				// Neu username nguoi dung nhap chinh xac
 				// Kiem tra password nguoi dung co khop voi password trong database
-				if (userLogin.getPassword().equals(user.getPassword()) == false) {
-					// Thong bao sai thong tin password
-					errors.rejectValue("password", "NotExist.userLogin.password");
+				if (!passwordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
+				    errors.rejectValue("password", "NotExist.userLogin.password");
 				}
+
 			}
 		}
 	}

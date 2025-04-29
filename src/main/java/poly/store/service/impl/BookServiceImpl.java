@@ -4,8 +4,6 @@ package poly.store.service.impl;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -38,9 +36,6 @@ import poly.store.service.BookService;
 /**
  * Class trien khai theo interface UserService, Thao tac voi Class UserDao de
  * thuc hien cac tac vu tuong ung
- * 
- * @author 
- * @version 1.00
  */
 @Service
 public class BookServiceImpl implements BookService {
