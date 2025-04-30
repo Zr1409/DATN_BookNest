@@ -114,7 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private ClientRegistration googleClientRegistration() {
-		return ClientRegistration.withRegistrationId("google").clientId(System.getenv("GOOGLE_CLIENT_ID"))
+		return ClientRegistration.withRegistrationId("google").clientId(System.getenv("GOOGLE_CLIENT_ID")) 
 				.clientSecret(System.getenv("GOOGLE_CLIENT_SECRET")).scope("profile", "email")
 				.authorizationUri("https://accounts.google.com/o/oauth2/auth")
 				.tokenUri("https://oauth2.googleapis.com/token")
