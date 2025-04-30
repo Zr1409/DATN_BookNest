@@ -13,7 +13,6 @@ RUN chmod +x mvnw
 # Build project
 RUN ./mvnw clean package -DskipTests -X
 
-
 # Thiết lập biến môi trường OAuth
 ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 ENV GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
