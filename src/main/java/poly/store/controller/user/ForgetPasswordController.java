@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +39,7 @@ public class ForgetPasswordController {
 	MailerServiceImpl mailerService;
 
 	@Autowired
+	@Lazy
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/forget-password")

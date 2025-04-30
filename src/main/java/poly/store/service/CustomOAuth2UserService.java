@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +29,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private UserService userService;
 
 	@Autowired
+	@Lazy
 	private PasswordEncoder passwordEncoder;
+
 
 	// Thong tin wallet service
 	@Autowired
