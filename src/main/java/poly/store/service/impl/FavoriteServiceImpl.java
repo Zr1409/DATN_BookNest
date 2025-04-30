@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import poly.store.dao.FavoriteDao;
@@ -34,7 +35,20 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	public Favorite create(int id) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+		String username = null;
+
+		// Kiểm tra xem principal có phải là UserDetails hay không
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else if (principal instanceof OAuth2User) {
+			// Nếu là OAuth2User (DefaultOAuth2User), lấy username (thường là email)
+			OAuth2User oauth2User = (OAuth2User) principal;
+			username = (String) oauth2User.getAttribute("email"); // Hoặc sử dụng attribute khác nếu có
+		}
+
+		if (username == null) {
+			throw new RuntimeException("User not authenticated");
+		}
 
 		User temp = userDao.findUserByEmail(username);
 
@@ -70,7 +84,20 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	public List<Favorite> getListFavoriteByEmail() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+		String username = null;
+
+		// Kiểm tra xem principal có phải là UserDetails hay không
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else if (principal instanceof OAuth2User) {
+			// Nếu là OAuth2User (DefaultOAuth2User), lấy username (thường là email)
+			OAuth2User oauth2User = (OAuth2User) principal;
+			username = (String) oauth2User.getAttribute("email"); // Hoặc sử dụng attribute khác nếu có
+		}
+
+		if (username == null) {
+			throw new RuntimeException("User not authenticated");
+		}
 
 		return favoriteDao.getListFavoriteByEmail(username);
 	}
@@ -86,10 +113,14 @@ public class FavoriteServiceImpl implements FavoriteService {
 		Favorite favorite = new Favorite();
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = "";
-		try {
+		String username = null;
+
+		if (principal instanceof UserDetails) {
+			// Đăng nhập thường (email + password)
 			username = ((UserDetails) principal).getUsername();
-		} catch (Exception e) {
+		} else if (principal instanceof OAuth2User) {
+			// Đăng nhập OAuth2 (Google, Facebook)
+			username = ((OAuth2User) principal).getAttribute("email");
 		}
 		User temp = userDao.findUserByEmail(username);
 

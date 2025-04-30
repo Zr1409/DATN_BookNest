@@ -5,9 +5,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -181,9 +179,6 @@ public class RegisterController {
 				result.rejectValue("confirmCode", "NotDuplicate.userRegister.confirmCode");
 			} else {
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-				// ✅ Mã hóa mật khẩu trước khi lưu
-				// String hashedPassword = passwordEncoder.encode(userRegister.getPassword());
 
 				// Them moi mot user
 				User user = new User();

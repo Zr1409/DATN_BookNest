@@ -86,7 +86,7 @@
 
 			<form th:action="@{/shop/cart/discount}" method="post">
 				<div id="collapse-coupon" class="panel-collapse collapse"
-					th:classappend="${showDiscount?'show':''}">
+					th:classappend="${showDiscount != null and showDiscount ? 'show' : ''}">
 					<div class="panel-body">
 						<label class="col-sm-2 control-label" for="input-coupon">Nhập
 							mã giảm giá ở đây</label>

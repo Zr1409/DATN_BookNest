@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import poly.store.common.Constants;
 import poly.store.entity.Discount;
-import poly.store.entity.Book;
+import poly.store.entity.User;
 import poly.store.model.AlertModel;
 import poly.store.model.BestSellerModel;
 import poly.store.model.CartModel;
@@ -32,12 +32,18 @@ import poly.store.service.OrderService;
 import poly.store.service.ParamService;
 import poly.store.service.BookService;
 import poly.store.service.SessionService;
+import poly.store.service.impl.DiscountServiceImpl;
+import poly.store.service.impl.OrderServiceImpl;
 import poly.store.service.impl.ShoppingCartServiceImpl;
+import poly.store.service.impl.UserServiceImpl;
 
 @Controller
 public class CartController {
 	@Autowired
 	ShoppingCartServiceImpl shoppingCartServiceImpl;
+	
+	@Autowired
+	DiscountServiceImpl discountServiceImpl;
 	
 	@Autowired
 	DiscountService discountService;
@@ -52,10 +58,16 @@ public class CartController {
 	OrderService orderService;
 	
 	@Autowired
+	OrderServiceImpl orderServiceImpl;
+	
+	@Autowired
 	BookReviewsService bookReviewsService;
 	
 	@Autowired
 	BookService productService;
+	
+	@Autowired
+	UserServiceImpl userServiceImpl;
 	
 	@GetMapping("/shop/cart")
 	public String index(Model model, @ModelAttribute("alertModel") AlertModel alertModel) {
@@ -116,6 +128,21 @@ public class CartController {
 	public String discount(Model model) {
 		String code = paramService.getString("discount", "");
 		
+		 // Kiểm tra xem mã giảm giá đã được sử dụng bởi tài khoản này chưa
+	    User currentUser = userServiceImpl.getCurrentUser(); // Lấy thông tin người dùng hiện tại
+	    if (currentUser == null) {
+	        return "redirect:/login";
+	    }
+	    if (discountServiceImpl.isDiscountUsedByUser(currentUser.getId(), code)) {
+	        AlertModel alertModel = new AlertModel();
+	        alertModel.setAlert("alert-warning");
+	        alertModel.setContent("Bạn đã sử dụng mã giảm giá này!");
+	        alertModel.setDisplay(true);
+	        model.addAttribute("alertModel", alertModel);
+	        model.addAttribute("cart", shoppingCartServiceImpl);
+	        model.addAttribute("showDiscount", true);
+	        return Constants.USER_DISPLAY_SHOPPING_CART;
+	    }
 		Discount discount = discountService.getDiscountByCode(code);
 		
 		AlertModel alertModel = new AlertModel();
@@ -147,8 +174,7 @@ public class CartController {
 		
 		model.addAttribute("showDiscount", true);
 		model.addAttribute("discount", code);
-		model.addAttribute("alertModel", alertModel);
-		
+		model.addAttribute("alertModel", alertModel);	
 		model.addAttribute("cart", shoppingCartServiceImpl);
 		return Constants.USER_DISPLAY_SHOPPING_CART;
 	}

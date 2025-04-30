@@ -17,110 +17,69 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 	@Query("SELECT o FROM Order o WHERE o.code = ?1")
 	List<Order> getOrderByName(String code);
 
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Kết hợp với bảng OrderDetail
-		       "JOIN od.book b " +  // Kết hợp với bảng Book để truy xuất price
-		       "WHERE o.address.user.email = ?1 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listOrderHistory(String email);
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Kết hợp với bảng OrderDetail
+			"JOIN od.book b " + // Kết hợp với bảng Book để truy xuất price
+			"WHERE o.address.user.email = ?1 " + "GROUP BY o.code, o.address.Fullname, o.date, o.status "
+			+ "ORDER BY o.date ASC")
+	List<OrderModel> listOrderHistory(String email);
 
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Kết hợp với bảng OrderDetail
+			"JOIN od.book b " + // Kết hợp với bảng Book để truy xuất price
+			"WHERE o.status = 0 " + "GROUP BY o.code, o.address.Fullname, o.date, o.status " + "ORDER BY o.date ASC")
+	List<OrderModel> listOrderGroupByCodePending();
 
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Kết hợp với bảng OrderDetail
-		       "JOIN od.book b " +  // Kết hợp với bảng Book để truy xuất price
-		       "WHERE o.status = 0 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listOrderGroupByCodePending();
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Kết hợp với bảng OrderDetail
+			"JOIN od.book b " + // Kết hợp với bảng Book để truy xuất price
+			"WHERE o.status = 1 " + "GROUP BY o.code, o.address.Fullname, o.date, o.status " + "ORDER BY o.date ASC")
+	List<OrderModel> listOrderGroupByCodeShipping();
 
+	@Query("SELECT new poly.store.model.OrderModel(o.code, o.address.Fullname, SUM(od.quantity), SUM(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Kết hợp với bảng OrderDetail
+			"JOIN od.book b " + // Kết hợp với bảng Book để truy xuất giá (price)
+			"WHERE o.status = 2 " + // Trạng thái thành công
+			"GROUP BY o.code, o.address.Fullname, o.date, o.status " + // Nhóm theo các trường đã chỉ định
+			"ORDER BY o.date ASC")
+	List<OrderModel> listOrderGroupByCodeSuccess();
 
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Kết hợp với bảng OrderDetail
-		       "JOIN od.book b " +  // Kết hợp với bảng Book để truy xuất price
-		       "WHERE o.status = 1 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listOrderGroupByCodeShipping();
-
-
-	@Query("SELECT new poly.store.model.OrderModel(o.code, o.address.Fullname, SUM(od.quantity), SUM(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Kết hợp với bảng OrderDetail
-		       "JOIN od.book b " +  // Kết hợp với bảng Book để truy xuất giá (price)
-		       "WHERE o.status = 2 " +  // Trạng thái thành công
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +  // Nhóm theo các trường đã chỉ định
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listOrderGroupByCodeSuccess();
-
-
-
-
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Kết hợp với bảng OrderDetail
-		       "JOIN od.book b " +  // Kết hợp với bảng Book để truy xuất price
-		       "WHERE o.status = 3 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listOrderGroupByCodeCancel();
-
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Kết hợp với bảng OrderDetail
+			"JOIN od.book b " + // Kết hợp với bảng Book để truy xuất price
+			"WHERE o.status = 3 " + "GROUP BY o.code, o.address.Fullname, o.date, o.status " + "ORDER BY o.date ASC")
+	List<OrderModel> listOrderGroupByCodeCancel();
 
 	@Query("SELECT o FROM Order o WHERE o.code = ?1 and o.address.user.email = ?2")
 	List<Order> listOrderByCodeAndUsername(String code, String username);
 
-	@Query("SELECT new StatisticalBookDay(od.book.code, od.book.name, od.book.price, od.book.quantity, sum(od.quantity)) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Liên kết với OrderDetails
-		       "JOIN od.book b " +  // Liên kết với Book
-		       "WHERE CAST(GETDATE() AS date) = o.date " +
-		       "AND o.status = 2 " +
-		       "GROUP BY od.book.code, od.book.name, od.book.price, od.book.quantity")
-		List<StatisticalBookDay> listStatisticalBookDay();
+	@Query("SELECT new StatisticalBookDay(od.book.code, od.book.name, od.book.price, od.book.quantity, sum(od.quantity)) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Liên kết với OrderDetails
+			"JOIN od.book b " + // Liên kết với Book
+			"WHERE CAST(GETDATE() AS date) = o.date " + "AND o.status = 2 "
+			+ "GROUP BY od.book.code, od.book.name, od.book.price, od.book.quantity")
+	List<StatisticalBookDay> listStatisticalBookDay();
 
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Liên kết với OrderDetails
+			"JOIN od.book b " + // Liên kết với Book
+			"WHERE o.status = 2 " + "AND MONTH(o.date) = ?1 " + "AND YEAR(o.date) = ?2 "
+			+ "GROUP BY o.code, o.address.Fullname, o.date, o.status " + "ORDER BY o.date ASC")
+	List<OrderModel> listStatisticalRevenueMonth(int month, int year);
 
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Liên kết với OrderDetails
+			"JOIN od.book b " + // Liên kết với Book
+			"WHERE o.status = 2 " + "AND YEAR(o.date) = ?1 " + "GROUP BY o.code, o.address.Fullname, o.date, o.status "
+			+ "ORDER BY o.date ASC")
+	List<OrderModel> listStatisticalRevenueYear(int year);
 
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Liên kết với OrderDetails
-		       "JOIN od.book b " +  // Liên kết với Book
-		       "WHERE o.status = 2 " +
-		       "AND MONTH(o.date) = ?1 " +
-		       "AND YEAR(o.date) = ?2 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listStatisticalRevenueMonth(int month, int year);
-
-
-
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Liên kết với OrderDetails
-		       "JOIN od.book b " +  // Liên kết với Book
-		       "WHERE o.status = 2 " +
-		       "AND YEAR(o.date) = ?1 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listStatisticalRevenueYear(int year);
-
-
-
-	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) " +
-		       "FROM Order o " +
-		       "JOIN o.orderDetails od " +  // Liên kết với OrderDetails
-		       "JOIN od.book b " +  // Liên kết với Book
-		       "WHERE o.status = 2 " +
-		       "AND DAY(o.date) = ?1 " +
-		       "AND MONTH(o.date) = ?2 " +
-		       "AND YEAR(o.date) = ?3 " +
-		       "GROUP BY o.code, o.address.Fullname, o.date, o.status " +
-		       "ORDER BY o.date ASC")
-		List<OrderModel> listStatisticalRevenueDay(int day, int month, int year);
-
-
+	@Query("SELECT new OrderModel(o.code, o.address.Fullname, sum(od.quantity), sum(od.book.price * od.quantity), o.date, o.status) "
+			+ "FROM Order o " + "JOIN o.orderDetails od " + // Liên kết với OrderDetails
+			"JOIN od.book b " + // Liên kết với Book
+			"WHERE o.status = 2 " + "AND DAY(o.date) = ?1 " + "AND MONTH(o.date) = ?2 " + "AND YEAR(o.date) = ?3 "
+			+ "GROUP BY o.code, o.address.Fullname, o.date, o.status " + "ORDER BY o.date ASC")
+	List<OrderModel> listStatisticalRevenueDay(int day, int month, int year);
 
 	@Query("SELECT new StatisticalOrder(COUNT(o)) FROM Order o WHERE (o.status = 2) AND DAY(o.date) = ?1 AND MONTH(o.date) = ?2 AND YEAR(o.date) = ?3 GROUP BY o.code")
 	List<StatisticalOrder> getMaxOrderSuccessOnDay(int day, int month, int year);
@@ -164,14 +123,10 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 	@Query("SELECT MIN(YEAR(o.date)) FROM Order o")
 	int getMinYearOrder();
 
-	@Query("SELECT new poly.store.model.BestSellerModel(b, SUM(od.quantity)) " +
-		       "FROM OrderDetail od " +
-		       "JOIN od.book b " +
-		       "WHERE b.Deleteday IS NULL AND b.active = TRUE " +
-		       "GROUP BY b " +
-		       "ORDER BY SUM(od.quantity) DESC")
-		List<BestSellerModel> getListBestSellerBook(Pageable pageable);
-
+	@Query("SELECT new poly.store.model.BestSellerModel(b, SUM(od.quantity)) " + "FROM OrderDetail od "
+			+ "JOIN od.book b " + "WHERE b.Deleteday IS NULL AND b.active = TRUE " + "GROUP BY b "
+			+ "ORDER BY SUM(od.quantity) DESC")
+	List<BestSellerModel> getListBestSellerBook(Pageable pageable);
 
 	@Query("SELECT COUNT(DISTINCT o.code) FROM Order o WHERE o.status = 0 ")
 	int countPendingOrders();
@@ -188,8 +143,15 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 	@Query("SELECT a.user.id, COUNT(o.id) " + "FROM Order o " + "JOIN Address a ON o.address.id = a.id "
 			+ "WHERE o.status = 2 " + "GROUP BY a.user.id " + "HAVING COUNT(o.id) >= 3")
 	List<Object[]> findUsersWithSuccessfulOrders();
-	
+
 	@Query("SELECT o FROM Order o WHERE o.code = :code")
 	List<Order> findByCode(@Param("code") String code);
+
+	@Query(value = "SELECT o.* FROM Orders o " + "JOIN Discount d ON o.discount_id = d.id "
+			+ "JOIN Address a ON o.address_id = a.id " + "JOIN Users u ON a.user_id = u.id " + "WHERE u.id = :userId "
+			+ "AND d.code = :discountCode " + "AND GETDATE() >= d.ApplyDay " + "AND GETDATE() <= d.Expiration "
+			+ "AND d.DeleteDay IS NULL", nativeQuery = true)
+	List<Order> findOrdersByUserAndDiscountCode(Integer userId, String discountCode);
+
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,25 +26,21 @@ import poly.store.service.impl.MailerServiceImpl;
 /**
  * Class de lay lai mat khau
  * 
- * @author 
- * @version 
+ * @author
+ * @version
  */
 @Controller
 public class ForgetPasswordController {
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	MailerServiceImpl mailerService;
-	
 
-	/**
-	 * Hien thi man hinh forget-password
-	 * 
-	 * @param model
-	 * @return man hinh forget-password
-	 */
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@GetMapping("/forget-password")
 	public String displayFormForgetPassword(Model model) {
 		UserRegister userForm = new UserRegister();
@@ -51,106 +48,79 @@ public class ForgetPasswordController {
 		return Constants.USER_DISPLAY_FORGET_PASSWORD;
 	}
 
-//	@PostMapping("/forget-password")
-//	public String handlerFormForgetPassword(Model model, @ModelAttribute("userForm") @Validated UserRegister userForm,
-//			BindingResult result) {
-//		if (userForm.getEmail().isEmpty()) {
-//			result.rejectValue("email", "NotBlank.userRegister.email");
-//		} else {
-//			User user = userService.findUserByEmail(userForm.getEmail());
-//			if (user == null) {
-//				result.rejectValue("email", "NotExist.userLogin.username");
-//			}
-//			else {
-//				String password = pe.encode(user.getPassword());
-//				mailerService.queue(userForm.getEmail(), "Làm mới mật khẩu!", "Vui lòng click vào link này: "+ "http://localhost:8080/reset-password?code="+password+"&email="+user.getEmail() +" để reset mật khẩu.");
-//			}
-//		}
-//
-//		if (result.hasErrors()) {
-//			return Constants.USER_DISPLAY_FORGET_PASSWORD;
-//		}
-//		
-//		model.addAttribute("alert", "Thông báo!");
-//		model.addAttribute("message", "Vui lòng kiểm tra email để thay đổi mật khẩu!");
-//		return Constants.USER_DISPLAY_ALERT_STATUS;
-//	}
 	@PostMapping("/forget-password")
 	public String handlerFormForgetPassword(Model model, @ModelAttribute("userForm") @Validated UserRegister userForm,
-	        BindingResult result) {
+			BindingResult result) {
 
-	    if (userForm.getEmail().isEmpty()) {
-	        result.rejectValue("email", "NotBlank.userRegister.email");
-	    } else {
-	        User user = userService.findUserByEmail(userForm.getEmail());
+		if (userForm.getEmail().isEmpty()) {
+			result.rejectValue("email", "NotBlank.userRegister.email");
+		} else {
+			User user = userService.findUserByEmail(userForm.getEmail());
 
-	        if (user == null) {
-	            result.rejectValue("email", "NotExist.userRegister.email");
-	        } else {
-	            // Tạo mật khẩu ngẫu nhiên
-	            String randomPassword = generateRandomPassword(8);
+			if (user == null) {
+				result.rejectValue("email", "NotExist.userRegister.email");
+			} else {
+				// Tạo mật khẩu ngẫu nhiên
+				String randomPassword = generateRandomPassword(8);
+				// Mã hóa mật khẩu
+				// Cập nhật mật khẩu mới cho user
+				String encodedPassword = passwordEncoder.encode(randomPassword);
+				user.setPassword(encodedPassword);
+				userService.save(user);
 
-	            // Mã hóa mật khẩu
-	            //String encodedPassword = pe.encode(randomPassword);
+				// Gửi email chứa mật khẩu mới
+				mailerService.queue(userForm.getEmail(), "Cấp lại mật khẩu!", "Mật khẩu mới của bạn là: "
+						+ randomPassword + "\n.Vui lòng đăng nhập và đổi lại mật khẩu ngay!");
 
-	            // Cập nhật mật khẩu mới cho user
-	            user.setPassword(randomPassword );
-	            userService.save(user);
+				model.addAttribute("alert", "Thông báo!");
+				model.addAttribute("message", "Vui lòng kiểm tra email để nhận mật khẩu mới!");
+				return Constants.USER_DISPLAY_ALERT_STATUS;
+			}
+		}
 
-	            // Gửi email chứa mật khẩu mới
-	            mailerService.queue(userForm.getEmail(), "Cấp lại mật khẩu!", 
-	                "Mật khẩu mới của bạn là: " + randomPassword + 
-	                "\n.Vui lòng đăng nhập và đổi lại mật khẩu ngay!");
+		if (result.hasErrors()) {
+			return Constants.USER_DISPLAY_FORGET_PASSWORD;
+		}
 
-	            model.addAttribute("alert", "Thông báo!");
-	            model.addAttribute("message", "Vui lòng kiểm tra email để nhận mật khẩu mới!");
-	            return Constants.USER_DISPLAY_ALERT_STATUS;
-	        }
-	    }
-
-	    if (result.hasErrors()) {
-	        return Constants.USER_DISPLAY_FORGET_PASSWORD;
-	    }
-
-	    return Constants.USER_DISPLAY_ALERT_STATUS;
+		return Constants.USER_DISPLAY_ALERT_STATUS;
 	}
 
 	// Hàm tạo mật khẩu ngẫu nhiên
 	private String generateRandomPassword(int length) {
-	    String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	    String lowerCase = "abcdefghijklmnopqrstuvwxyz";
-	    String specialChars = "@#$%^&*!";
-	    String allChars = upperCase + lowerCase + "0123456789" + specialChars;
-	    
-	    SecureRandom random = new SecureRandom();
-	    StringBuilder password = new StringBuilder();
+		String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String lowerCase = "abcdefghijklmnopqrstuvwxyz";
+		String specialChars = "@#$%^&*!";
+		String allChars = upperCase + lowerCase + "0123456789" + specialChars;
 
-	    // Đảm bảo có ít nhất 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt
-	    password.append(upperCase.charAt(random.nextInt(upperCase.length())));
-	    password.append(lowerCase.charAt(random.nextInt(lowerCase.length())));
-	    password.append(specialChars.charAt(random.nextInt(specialChars.length())));
+		SecureRandom random = new SecureRandom();
+		StringBuilder password = new StringBuilder();
 
-	    // Tạo các ký tự ngẫu nhiên còn lại
-	    for (int i = 3; i < length; i++) {
-	        password.append(allChars.charAt(random.nextInt(allChars.length())));
-	    }
+		// Đảm bảo có ít nhất 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt
+		password.append(upperCase.charAt(random.nextInt(upperCase.length())));
+		password.append(lowerCase.charAt(random.nextInt(lowerCase.length())));
+		password.append(specialChars.charAt(random.nextInt(specialChars.length())));
 
-	    // Trộn ngẫu nhiên để tránh thứ tự cố định
-	    return shuffleString(password.toString());
+		// Tạo các ký tự ngẫu nhiên còn lại
+		for (int i = 3; i < length; i++) {
+			password.append(allChars.charAt(random.nextInt(allChars.length())));
+		}
+
+		// Trộn ngẫu nhiên để tránh thứ tự cố định
+		return shuffleString(password.toString());
 	}
 
 	// Hàm trộn chuỗi để mật khẩu không theo mẫu cố định
 	private String shuffleString(String input) {
-	    List<Character> characters = new ArrayList<>();
-	    for (char c : input.toCharArray()) {
-	        characters.add(c);
-	    }
-	    Collections.shuffle(characters);
-	    StringBuilder shuffled = new StringBuilder();
-	    for (char c : characters) {
-	        shuffled.append(c);
-	    }
-	    return shuffled.toString();
+		List<Character> characters = new ArrayList<>();
+		for (char c : input.toCharArray()) {
+			characters.add(c);
+		}
+		Collections.shuffle(characters);
+		StringBuilder shuffled = new StringBuilder();
+		for (char c : characters) {
+			shuffled.append(c);
+		}
+		return shuffled.toString();
 	}
 
 }
