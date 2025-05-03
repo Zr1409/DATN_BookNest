@@ -28,9 +28,9 @@ angular
         .withOption("info", true)
 		.withLanguage({
 													"sProcessing": "Đang xử lý...",
-													"sLengthMenu": "Hiển thị _MENU_ sản phẩm tồn kho",
+													"sLengthMenu": "Hiển thị _MENU_ sản phẩm chưa được bán",
 													"sZeroRecords": "Không tìm thấy dữ liệu",
-													"sInfo": "Hiển thị _START_ đến _END_ trong số _TOTAL_ sản phẩm tồn kho",
+													"sInfo": "Hiển thị _START_ đến _END_ trong số _TOTAL_ sản phẩm chưa được bán",
 													"sInfoEmpty": "Hiển thị 0 đến 0 của 0 dòng",
 													"sInfoFiltered": "(lọc từ _MAX_ dòng)",
 													"sSearch": "Tìm kiếm:",

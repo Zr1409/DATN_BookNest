@@ -41,7 +41,7 @@ public interface BookDao extends JpaRepository<Book, Integer>{
 	@Query(value="SELECT TOP(5) * FROM Books WHERE DeleteDay is NULL and Active = 1 and Sales != 0 ORDER BY Views DESC", nativeQuery = true)
 	List<Book> getListBookSales();
 	
-	@Query(value="SELECT * FROM Books WHERE NOT EXISTS (SELECT * FROM ORDERS WHERE Books.Id = ORDERS.Book_Id) AND Books.DeleteDay is NULL", nativeQuery = true)
+	@Query(value="SELECT * FROM Books WHERE NOT EXISTS (SELECT * FROM  OrderDetails   WHERE OrderDetails.Book_Id = Books.Id) AND Books.DeleteDay is NULL", nativeQuery = true)
 	List<Book> listStatisticalBookWarehouse();
 	
 	//So luong san pham da ban
@@ -52,6 +52,7 @@ public interface BookDao extends JpaRepository<Book, Integer>{
 		       "WHERE o.status = 2 " +  // Trạng thái thành công
 		       "GROUP BY b.id")
 		List<ShowBook> getAllShowBooks();
+
 	
 	 // Tìm sách theo tên (case insensitive)
 	 List<Book> findByNameContainingIgnoreCase(String name);

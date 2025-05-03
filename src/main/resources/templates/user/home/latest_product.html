@@ -27,6 +27,20 @@
 	transform: scale(0.95) !important;
 	box-shadow: 0px 3px 10px rgba(255, 140, 0, 0.3) !important;
 }
+/* Lượt xem - hiệu ứng ẩn hiện mượt */
+.view-count {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0px);
+	transition: all 0.4s ease-in-out;
+}
+
+/* Khi hover vào product-thumb, ẩn lượt xem */
+.product-thumb:hover .view-count {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(10px); /* trượt nhẹ xuống dưới */
+}
 
 .discount-percent {
 	background-color: #ff6666 !important; /* Màu đỏ nhạt */
@@ -141,7 +155,15 @@
 														'COMMA')}]] </span> <input type="hidden" id="productId"
 														th:value="${item2.book.id}" />
 												</div>
-
+												<!-- Lượt xem hiển thị trên thanh -->
+												<div class="view-count"
+													style="position: relative; height: 20px; width: 100%; background-color: #ff6666; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+													<!-- Lượt xem (chữ màu trắng) -->
+													<div
+														style="position: absolute; font-size: 14px; color: white;">
+														Lượt xem: [[${#numbers.formatInteger(item2.book.views, 0,
+														'COMMA')}]]</div>
+												</div>
 												<button type="button"
 													class="addcart btn-buy-now custom-buy-now"
 													title="Add to Cart"

@@ -37,7 +37,25 @@
 	transform: scale(0.95) !important;
 	box-shadow: 0px 3px 10px rgba(255, 140, 0, 0.3) !important;
 }
+/* Lượt xem - hiệu ứng ẩn hiện mượt */
+.view-count {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0px);
+	transition: all 0.4s ease-in-out;
+}
 
+/* Khi hover vào product-thumb, ẩn lượt xem */
+.product-thumb:hover .view-count {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(10px); /* trượt nhẹ xuống dưới */
+}
+.product-thumb:hover .sold-quantity {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(10px); /* trượt nhẹ xuống dưới */
+}
 .discount-percent {
 	background-color: #ff6666 !important; /* Màu đỏ nhạt */
 	color: white !important;
@@ -48,6 +66,7 @@
 	display: inline-block !important;
 	margin-left: 8px !important;
 }
+
 .product-thumb {
 	border: 2px solid transparent; /* Viền trong suốt mặc định */
 	transition: all 0.3s ease-in-out;
@@ -61,9 +80,8 @@
 	transform: scale(1.02); /* Phóng to nhẹ */
 }
 /* Giảm khoảng cách giữa các sản phẩm khi ở chế độ danh sách */
-
 .category-row.list-view-active .product-layout {
-    height: auto !important; /* Chiều cao khi ở dạng danh sách */
+	height: auto !important; /* Chiều cao khi ở dạng danh sách */
 }
 </style>
 <div id="content" class="col-sm-9">
@@ -137,7 +155,8 @@
 	</div>
 	<div class="row category-row">
 		<th:block th:each="item: ${listBook.content}">
-			<div class="product-layout product-list col-xs-12" style="height: 450px; /* Chiều cao cố định */ display: flex; flex-direction: column; justify-content: space-between;">
+			<div class="product-layout product-list col-xs-12"
+				style="height: 450px; /* Chiều cao cố định */ display: flex; flex-direction: column; justify-content: space-between;">
 				<div class="product-thumb">
 					<div class="image">
 						<a th:href="@{|/san-pham/${item.book.Namesearch}|}"> <img
@@ -161,27 +180,24 @@
 								<a th:href="@{|/san-pham/${item.book.Namesearch}|}">[[${item.book.name}]]</a>
 							</h4>
 							<p class="price">
-													<th:block th:if="${item.book.sales > 0}">
-														<!-- Giá gốc bị gạch nếu có khuyến mãi -->
-														<span class="price-old">
-															[[${#numbers.formatInteger(item.book.price, 3,
-															'POINT')}]]₫ </span>
-														<br>
-														<!-- Giá khuyến mãi -->
-														<span class="price-sale">
-															[[${#numbers.formatInteger(item.book.sales, 3,
-															'POINT')}]]₫ </span>
-														<span class="discount-percent">
-															-[[${#numbers.formatInteger(((item.book.price -
-															item.book.sales) * 100.0 / item.book.price), 0,
-															'POINT')}]]% </span>
-													</th:block>
+								<th:block th:if="${item.book.sales > 0}">
+									<!-- Giá gốc bị gạch nếu có khuyến mãi -->
+									<span class="price-old">
+										[[${#numbers.formatInteger(item.book.price, 3, 'POINT')}]]₫ </span>
+									<br>
+									<!-- Giá khuyến mãi -->
+									<span class="price-sale">
+										[[${#numbers.formatInteger(item.book.sales, 3, 'POINT')}]]₫ </span>
+									<span class="discount-percent">
+										-[[${#numbers.formatInteger(((item.book.price -
+										item.book.sales) * 100.0 / item.book.price), 0, 'POINT')}]]% </span>
+								</th:block>
 
-													<th:block th:if="${item.book.sales == 0}">
-														<!-- Nếu không có giảm giá, chỉ hiển thị giá bình thường -->
+								<th:block th:if="${item.book.sales == 0}">
+									<!-- Nếu không có giảm giá, chỉ hiển thị giá bình thường -->
         												[[${#numbers.formatInteger(item.book.price, 3, 'POINT')}]]₫
     												</th:block>
-												</p>
+							</p>
 							<div
 								style="flex-direction: row !important; display: flex !important; align-items: center !important; font-size: 14px !important;">
 
@@ -207,7 +223,14 @@
 									'COMMA')}]] </span> <input type="hidden" id="productId"
 									th:value="${item.book.id}" />
 							</div>
-
+							<!-- Lượt xem hiển thị trên thanh -->
+							<div class="view-count"
+								style="position: relative; height: 20px; width: 100%; background-color: #ff6666; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+								<!-- Lượt xem (chữ màu trắng) -->
+								<div style="position: absolute; font-size: 14px; color: white;">
+									Lượt xem: [[${#numbers.formatInteger(item.book.views, 0,
+									'COMMA')}]]</div>
+							</div>
 							<p class="description">[(${item.book.description.substring(0,200)})]...</p>
 							<div class="btn-all">
 								<button type="button" class="addcart btn-buy-now custom-buy-now"
@@ -226,8 +249,8 @@
 		<div class="row">
 			<div class="col-sm-6 text-left">Hiển thị
 				[[${listBook.totalElements}]] trong tổng số
-				[[${listBook.totalElements}]] sản phẩm
-				([[${listBook.totalPages}]] Trang)</div>
+				[[${listBook.totalElements}]] sản phẩm ([[${listBook.totalPages}]]
+				Trang)</div>
 			<div class="col-sm-6 text-right">
 				<input id="indexPage" name="p" value="0" type="hidden">
 				<ul class="pagination">
@@ -250,18 +273,17 @@
 
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const gridViewBtn = document.getElementById("grid-view");
-    const listViewBtn = document.getElementById("list-view");
-    const categoryRow = document.querySelector(".category-row");
+	document.addEventListener("DOMContentLoaded", function() {
+		const gridViewBtn = document.getElementById("grid-view");
+		const listViewBtn = document.getElementById("list-view");
+		const categoryRow = document.querySelector(".category-row");
 
-    listViewBtn.addEventListener("click", function () {
-        categoryRow.classList.add("list-view-active"); // Thêm class vào .category-row
-    });
+		listViewBtn.addEventListener("click", function() {
+			categoryRow.classList.add("list-view-active"); // Thêm class vào .category-row
+		});
 
-    gridViewBtn.addEventListener("click", function () {
-        categoryRow.classList.remove("list-view-active"); // Xóa class khi quay về lưới
-    });
-});
-
+		gridViewBtn.addEventListener("click", function() {
+			categoryRow.classList.remove("list-view-active"); // Xóa class khi quay về lưới
+		});
+	});
 </script>

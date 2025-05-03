@@ -94,9 +94,9 @@ $(document).ready(function() {
 
 	$("#price").keyup(function() {
 		var price = this.value;
-		if (price == 0) {
+		if (isNaN(price) || price <= 0) {
 			$("#price").addClass("is-invalid");
-			$("#showErrorPrice").text("Vui lòng nhập giá sản phẩm!");
+			$("#showErrorPrice").text("Giá phải là số dương!");
 			checkPrice = 10;
 		} else {
 			if (price < 1000) {
@@ -113,11 +113,16 @@ $(document).ready(function() {
 	});
 
 	$("#sales").keyup(function() {
-		var price = $("#price").val();
-		var sales = this.value;
-		if (parseInt(sales) > parseInt(price)) {
+		var price = parseFloat($("#price").val());
+		var sales = parseFloat(this.value);
+
+		if (isNaN(sales) || sales < 0) {
 			$("#sales").addClass("is-invalid");
-			$("#showErrorSales").text("Giá khuyến mãi phải nhỏ hơn giá sách!");
+			$("#showErrorSales").text("Giá khuyến mãi phải là số nguyên dương!");
+			checkSales = 10;
+		} else if (sales >= price) {
+			$("#sales").addClass("is-invalid");
+			$("#showErrorSales").text("Giá khuyến mãi phải nhỏ hơn giá gốc!");
 			checkSales = 10;
 		} else {
 			$("#sales").removeClass("is-invalid");
@@ -127,11 +132,12 @@ $(document).ready(function() {
 		handlerButtonSave();
 	});
 
+
 	$("#quantity").keyup(function() {
 		var quantity = this.value;
-		if (quantity <= 0) {
+		if (isNaN(quantity) || quantity < 0) {
 			$("#quantity").addClass("is-invalid");
-			$("#showErrorQuantity").text("Vui lòng nhập số lượng sản phẩm!");
+			$("#showErrorQuantity").text("Số lượng phải lớn hơn 0");
 			checkQuantity = 10;
 		} else {
 			$("#quantity").removeClass("is-invalid");
@@ -140,6 +146,7 @@ $(document).ready(function() {
 		}
 		handlerButtonSave();
 	});
+
 
 
 	$("#chooseImage1").change(function() {
@@ -242,19 +249,19 @@ $(document).ready(function() {
 	});
 
 	$("#subBookCategory").change(function() {
-			var subBookCategory = this.value;
-			if (subBookCategory == "") {
-				$("#subBookCategory").addClass("is-invalid");
-				$("#showErrorSubBookCategory").text("Vui lòng chọn thể loại!");
-				checkSubBookCategory = 10;
-			}
-			else {
-				$("#subBookCategory").removeClass("is-invalid");
-				$("#showErrorSubBookCategory").text("");
-				checkSubBookCategory = 1;
-			}
-			handlerButtonSave();
-		});
+		var subBookCategory = this.value;
+		if (subBookCategory == "") {
+			$("#subBookCategory").addClass("is-invalid");
+			$("#showErrorSubBookCategory").text("Vui lòng chọn thể loại!");
+			checkSubBookCategory = 10;
+		}
+		else {
+			$("#subBookCategory").removeClass("is-invalid");
+			$("#showErrorSubBookCategory").text("");
+			checkSubBookCategory = 1;
+		}
+		handlerButtonSave();
+	});
 
 
 	$("#publisher").change(function() {
@@ -315,7 +322,13 @@ $(document).ready(function() {
 			$("#publicationYear").addClass("is-invalid");
 			$("#showErrorPublicationYear").text("Vui lòng nhập năm xuất bản!");
 			checkPublicationYear = 10;
-		} else if (publicationYear.length !== 4 || publicationYear < 1900 || publicationYear > new Date().getFullYear()) {
+		}
+		else if (isNaN(publicationYear) || publicationYear < 0) {
+			$("#publicationYear").addClass("is-invalid");
+			$("#showErrorPublicationYear").text("Năm xuất bản phải là số nguyên dương!");
+			checkPageCount = 10;
+		}
+		else if (publicationYear.length !== 4 || publicationYear < 1900 || publicationYear > new Date().getFullYear()) {
 			$("#publicationYear").addClass("is-invalid");
 			$("#showErrorPublicationYear").text("Năm xuất bản không hợp lệ!");
 			checkPublicationYear = 10;
@@ -373,11 +386,15 @@ $(document).ready(function() {
 		handlerButtonSave();
 	});
 
-	$("#pageCount").keyup(function() {
+	$("#pageCount").keyup(function () {
 		var pageCount = this.value;
-		if (pageCount == "") {
+		if (pageCount === "") {
 			$("#pageCount").addClass("is-invalid");
 			$("#showErrorPageCount").text("Vui lòng nhập số trang!");
+			checkPageCount = 10;
+		} else if (isNaN(pageCount) || pageCount <= 0) {
+			$("#pageCount").addClass("is-invalid");
+			$("#showErrorPageCount").text("Số trang phải là số nguyên dương!");
 			checkPageCount = 10;
 		} else {
 			var length = pageCount.length;
@@ -385,7 +402,7 @@ $(document).ready(function() {
 
 			if (length < minLength) {
 				$("#pageCount").addClass("is-invalid");
-				$("#showErrorPageCount").text();
+				$("#showErrorPageCount").text("Số trang quá ngắn!");
 				checkPageCount = 10;
 			} else {
 				$("#pageCount").removeClass("is-invalid");
@@ -395,6 +412,7 @@ $(document).ready(function() {
 		}
 		handlerButtonSave();
 	});
+
 	$("#format").keyup(function() {
 		var format = this.value;
 		if (format == "") {
@@ -481,7 +499,7 @@ function handlerButtonSave() {
 var app = angular.module("book-form-app", []);
 
 app.controller("book-form-ctrl", function($scope, $http) {
-	$scope.itemSubBookCategory  = [];
+	$scope.itemSubBookCategory = [];
 	$scope.itemPublisher = [];
 	$scope.form = {};
 	$scope.info = {};

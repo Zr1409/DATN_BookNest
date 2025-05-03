@@ -89,8 +89,10 @@
 											<div class="input-group">
 												<span class="input-group-addon"> <i
 													class="fa fa-user" aria-hidden="true"></i>
-												</span> <input id="author" ng-model="form.author" data-maxlength="
-													50" data-minlength="5" type="text" class="form-control"
+												</span> <input id="author" ng-model="form.author"
+													data-maxlength="
+													50" data-minlength="5"
+													type="text" class="form-control"
 													placeholder="Ví dụ: Nguyễn Du">
 												<div class="invalid-tooltip" id="showErrorAuthor"></div>
 											</div>
@@ -108,7 +110,8 @@
 													class="fa fa-phone-square" aria-hidden="true"></i>
 												</span> <input type="number" class="form-control"
 													ng-model="form.price" placeholder="Ví dụ: 210000"
-													id="price">
+													id="price" min="1">
+
 												<div class="invalid-tooltip" id="showErrorPrice"></div>
 											</div>
 										</div>
@@ -123,7 +126,7 @@
 												<span class="input-group-addon"> <i
 													class="fa fa-calendar" aria-hidden="true"></i>
 												</span> <input type="number" placeholder="Ví dụ: 30"
-													class="form-control" id="quantity" ng-model="form.quantity">
+													class="form-control" id="quantity" ng-model="form.quantity" min="1">
 												<div class="invalid-tooltip" id="showErrorQuantity"></div>
 											</div>
 										</div>
@@ -200,7 +203,7 @@
 												<span class="input-group-addon"> <i
 													class="fa fa-calendar" aria-hidden="true"></i>
 												</span> <input type="number" placeholder="Ví dụ: 10000"
-													class="form-control" id="sales" ng-model="form.sales">
+													class="form-control" id="sales" ng-model="form.sales" min="1">
 												<div class="invalid-tooltip" id="showErrorSales"></div>
 											</div>
 										</div>
@@ -270,10 +273,11 @@
 											<div class="input-group">
 												<span class="input-group-addon"> <i
 													class="fa fa-list" aria-hidden="true"></i>
-												</span> <select ng-model="form.subBookCategoryId" class="form-control"
-													id="subBookCategory">
+												</span> <select ng-model="form.subBookCategoryId"
+													class="form-control" id="subBookCategory">
 													<option value="">Choose a category</option>
-													<option ng-repeat="item in itemSubBookCategory" ng-value="item.id">{{item.name}}</option>
+													<option ng-repeat="item in itemSubBookCategory"
+														ng-value="item.id">{{item.name}}</option>
 												</select>
 												<div class="invalid-tooltip" id="showErrorSubBookCategory"></div>
 											</div>
@@ -352,7 +356,7 @@
 													class="fa fa-calendar" aria-hidden="true"></i>
 												</span> <input type="number" placeholder="Ví dụ: 2024"
 													class="form-control" id="publicationYear"
-													ng-model="form.publicationYear">
+													ng-model="form.publicationYear" min="1">
 												<div class="invalid-tooltip" id="showErrorPublicationYear"></div>
 											</div>
 										</div>
@@ -383,7 +387,7 @@
 													class="fa fa-calendar" aria-hidden="true"></i>
 												</span> <input type="number" placeholder="Ví dụ: 200"
 													class="form-control" id="pageCount"
-													ng-model="form.pageCount">
+													ng-model="form.pageCount" min="1">
 												<div class="invalid-tooltip" id="showErrorPageCount"></div>
 											</div>
 										</div>

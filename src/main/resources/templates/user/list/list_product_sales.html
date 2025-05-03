@@ -37,7 +37,25 @@
 	transform: scale(0.95) !important;
 	box-shadow: 0px 3px 10px rgba(255, 140, 0, 0.3) !important;
 }
+/* Lượt xem - hiệu ứng ẩn hiện mượt */
+.view-count {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0px);
+	transition: all 0.4s ease-in-out;
+}
 
+/* Khi hover vào product-thumb, ẩn lượt xem */
+.product-thumb:hover .view-count {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(10px); /* trượt nhẹ xuống dưới */
+}
+.product-thumb:hover .sold-quantity {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(10px); /* trượt nhẹ xuống dưới */
+}
 .discount-percent {
 	background-color: #ff6666 !important; /* Màu đỏ nhạt */
 	color: white !important;
@@ -71,17 +89,17 @@
 	<div class="cat_info">
 		<div class="row">
 			<div class="col-sm-2 col-xs-5 cat_list_gird">
-					<div class="btn-group btn-group-sm">
-						<button type="button" id="grid-view" class="btn btn-default"
-							data-toggle="tooltip" title="Lưới">
-							<i class="fa fa-th-large"></i>
-						</button>
-						<button type="button" id="list-view" class="btn btn-default"
-							data-toggle="tooltip" title="Danh sách">
-							<i class="fa fa-th-list"></i>
-						</button>
-					</div>
+				<div class="btn-group btn-group-sm">
+					<button type="button" id="grid-view" class="btn btn-default"
+						data-toggle="tooltip" title="Lưới">
+						<i class="fa fa-th-large"></i>
+					</button>
+					<button type="button" id="list-view" class="btn btn-default"
+						data-toggle="tooltip" title="Danh sách">
+						<i class="fa fa-th-list"></i>
+					</button>
 				</div>
+			</div>
 			<div class="col-sm-3 col-xs-6 com-total">
 				<a href="" id="compare-total" class="btn btn-link">So Sánh SP
 					(0)</a>
@@ -139,27 +157,24 @@
 								<a th:href="@{|/san-pham/${item.book.Namesearch}|}">[[${item.book.name}]]</a>
 							</h4>
 							<p class="price">
-													<th:block th:if="${item.book.sales > 0}">
-														<!-- Giá gốc bị gạch nếu có khuyến mãi -->
-														<span class="price-old">
-															[[${#numbers.formatInteger(item.book.price, 3,
-															'POINT')}]]₫ </span>
-														<br>
-														<!-- Giá khuyến mãi -->
-														<span class="price-sale">
-															[[${#numbers.formatInteger(item.book.sales, 3,
-															'POINT')}]]₫ </span>
-														<span class="discount-percent">
-															-[[${#numbers.formatInteger(((item.book.price -
-															item.book.sales) * 100.0 / item.book.price), 0,
-															'POINT')}]]% </span>
-													</th:block>
+								<th:block th:if="${item.book.sales > 0}">
+									<!-- Giá gốc bị gạch nếu có khuyến mãi -->
+									<span class="price-old">
+										[[${#numbers.formatInteger(item.book.price, 3, 'POINT')}]]₫ </span>
+									<br>
+									<!-- Giá khuyến mãi -->
+									<span class="price-sale">
+										[[${#numbers.formatInteger(item.book.sales, 3, 'POINT')}]]₫ </span>
+									<span class="discount-percent">
+										-[[${#numbers.formatInteger(((item.book.price -
+										item.book.sales) * 100.0 / item.book.price), 0, 'POINT')}]]% </span>
+								</th:block>
 
-													<th:block th:if="${item.book.sales == 0}">
-														<!-- Nếu không có giảm giá, chỉ hiển thị giá bình thường -->
+								<th:block th:if="${item.book.sales == 0}">
+									<!-- Nếu không có giảm giá, chỉ hiển thị giá bình thường -->
         												[[${#numbers.formatInteger(item.book.price, 3, 'POINT')}]]₫
     												</th:block>
-												</p>
+							</p>
 							<div
 								style="flex-direction: row !important; display: flex !important; align-items: center !important; font-size: 14px !important;">
 								<div class="rating">
@@ -183,6 +198,14 @@
 									Đã bán: [[${#numbers.formatInteger(item.soldQuantity, 0,
 									'COMMA')}]] </span> <input type="hidden" id="productId"
 									th:value="${item.book.id}" />
+							</div>
+							<!-- Lượt xem hiển thị trên thanh -->
+							<div class="view-count"
+								style="position: relative; height: 20px; width: 100%; background-color: #ff6666; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+								<!-- Lượt xem (chữ màu trắng) -->
+								<div style="position: absolute; font-size: 14px; color: white;">
+									Lượt xem: [[${#numbers.formatInteger(item.book.views, 0,
+									'COMMA')}]]</div>
 							</div>
 							<p class="description">[(${item.book.description.substring(0,200)})]...</p>
 							<div class="btn-all">
@@ -230,7 +253,7 @@
 		const gridViewBtn = document.getElementById("grid-view");
 		const listViewBtn = document.getElementById("list-view");
 		const categoryRow = document.querySelector(".category-row");
-		
+
 		listViewBtn.addEventListener("click", function() {
 			categoryRow.classList.add("list-view-active"); // Thêm class vào .category-row
 		});
