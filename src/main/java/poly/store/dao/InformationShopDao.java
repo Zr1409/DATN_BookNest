@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import poly.store.entity.InformationShop;
 
 public interface InformationShopDao extends JpaRepository<InformationShop, Integer>{
-	@Query("SELECT i FROM InformationShop i WHERE i.Deleteday = null")
+	@Query("SELECT i FROM InformationShop i WHERE i.Deleteday IS NULL")
 	List<InformationShop> getListInformationShop();
-	
-	@Query("SELECT i FROM InformationShop i WHERE i.Deleteday = null and i.active = 1")
+
+	@Query("SELECT i FROM InformationShop i WHERE i.Deleteday IS NULL AND i.active = true")
 	InformationShop getOneInformationShop();
+
+
 }

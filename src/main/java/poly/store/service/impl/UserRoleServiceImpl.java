@@ -7,12 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import poly.store.dao.EmployeeDao;
 import poly.store.dao.UserDao;
 import poly.store.dao.UserRoleDao;
 import poly.store.entity.Employee;
+import poly.store.entity.Role;
 import poly.store.entity.User;
 import poly.store.entity.UserRole;
 import poly.store.service.UserRoleService;
@@ -66,7 +68,20 @@ public class UserRoleServiceImpl implements UserRoleService {
 	public void delete(Integer id) {
 		// Xoa user
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails)principal).getUsername();
+		String username = null;
+
+		// Kiểm tra xem principal có phải là UserDetails hay không
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else if (principal instanceof OAuth2User) {
+			// Nếu là OAuth2User (DefaultOAuth2User), lấy username (thường là email)
+			OAuth2User oauth2User = (OAuth2User) principal;
+			username = (String) oauth2User.getAttribute("email"); // Hoặc sử dụng attribute khác nếu có
+		}
+
+		if (username == null) {
+			throw new RuntimeException("User not authenticated");
+		}
 		User temp = userDao.findUserByEmail(username);
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		User user = userDao.findById(id).get();
@@ -88,6 +103,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 		else {
 			throw new RuntimeException();
 		}
+	}
+	
+	@Override
+	public Role findRoleByUserId(int userId) {
+		return userRoleDao.findRoleByUserId(userId);
 	}
 
 }

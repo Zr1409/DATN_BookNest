@@ -21,6 +21,7 @@ import poly.store.entity.Role;
 import poly.store.entity.User;
 import poly.store.entity.UserRole;
 import poly.store.entity.Wallet;
+import poly.store.service.impl.UserRoleServiceImpl;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -32,7 +33,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	@Lazy
 	private PasswordEncoder passwordEncoder;
 
-
 	// Thong tin wallet service
 	@Autowired
 	WalletService walletService;
@@ -40,11 +40,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	// Thong tin user role service
 	@Autowired
 	UserRoleService userRoleService;
+	
+	@Autowired
+	UserRoleServiceImpl userRoleServiceImpl;
 
 	// Thong tin role service
 	@Autowired
 	RoleService roleService;
-	
+
 	@Autowired
 	DiscountService discountService;
 
@@ -97,8 +100,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			}
 		}
 
+		// Nếu user đã tồn tại, lấy danh sách role hiện có
+		Role userRole = userRoleServiceImpl.findRoleByUserId(user.getId()); 
+		String roleName = (userRole != null) ? userRole.getName() : "ROLE_USER"; 
 		// Cấp quyền ROLE_USER
-		GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+		GrantedAuthority authority = new SimpleGrantedAuthority(roleName);
 
 		return new DefaultOAuth2User(Collections.singleton(authority), oauth2User.getAttributes(), "email");
 	}
