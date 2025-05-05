@@ -520,35 +520,46 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<StatisticalRevenue> listStatisticalRevenueDay(int day, int month, int year) {
 		Calendar cal = Calendar.getInstance();
-
 		cal.set(Calendar.MONTH, month - 1);
-
 		int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-		List<StatisticalRevenue> listRevenue = new ArrayList<StatisticalRevenue>();
+		List<StatisticalRevenue> listRevenue = new ArrayList<>();
 
 		for (int i = 1; i <= maxDay; i++) {
 			long sum = 0;
 
-			List<OrderModel> listOrder = new ArrayList<OrderModel>();
-			listOrder = orderDao.listStatisticalRevenueDay(i, month, year);
+			List<OrderModel> listOrder = orderDao.listStatisticalRevenueDay(i, month, year);
 
 			if (!listOrder.isEmpty()) {
-				for (OrderModel order : listOrder) {
-					Discount discount = order.getDiscount();
-					sum = sum + order.getTotal();
-					if (discount != null) {
-						sum = sum - discount.getPrice();
-					}
-					sum = sum + 50000;
-				}
+				for (OrderModel orderModel : listOrder) {
+					Order order = orderDao.getOrderByName(orderModel.getId()).get(0);
+					if (order != null) {
+						long total = 0;
 
+						// Tính tổng giá sách (ưu tiên giá sales nếu có)
+						for (OrderDetail orderDetail : order.getOrderDetails()) {
+							Book book = orderDetail.getBook();
+							int price = (book.getSales() != 0 && book.getSales() > 0) ? book.getSales()
+									: book.getPrice();
+							total += price * orderDetail.getQuantity();
+						}
+
+						// Phí ship
+						int shippingFee = (order.getShippingFee() != null) ? order.getShippingFee() : 30000;
+
+						// Giảm giá
+						int discount = (order.getDiscount() != null) ? order.getDiscount().getPrice() : 0;
+
+						// Doanh thu cuối cùng
+						sum += total - discount + shippingFee;
+					}
+				}
 			}
 
-			double total = (double) sum / 1000000;
+			double totalInMillions = (double) sum / 1_000_000;
 
 			StatisticalRevenue statistical = new StatisticalRevenue();
-			statistical.setPrice(total);
+			statistical.setPrice(totalInMillions);
 			statistical.setDate(i);
 			listRevenue.add(statistical);
 		}
@@ -560,28 +571,43 @@ public class OrderServiceImpl implements OrderService {
 	public List<StatisticalRevenue> listStatisticalRevenueByMonth(int month, int year) {
 		List<StatisticalRevenue> listRevenue = new ArrayList<>();
 
-		// Duyệt từ tháng 1 đến tháng 12 để giữ đủ cột trên biểu đồ
+		// Duyệt 12 tháng để đảm bảo biểu đồ đủ cột từ tháng 1 đến tháng 12
 		for (int i = 1; i <= 12; i++) {
 			long sum = 0;
-			List<OrderModel> listOrder = orderDao.listStatisticalRevenueMonth(i, year);
 
-			if (!listOrder.isEmpty()) {
-				for (OrderModel order : listOrder) {
-					Discount discount = order.getDiscount();
-					sum += order.getTotal();
-					if (discount != null) {
-						sum -= discount.getPrice();
+			List<OrderModel> listOrderModel = orderDao.listStatisticalRevenueMonth(i, year);
+
+			if (!listOrderModel.isEmpty()) {
+				for (OrderModel orderModel : listOrderModel) {
+					Order order = orderDao.getOrderByName(orderModel.getId()).get(0);
+					if (order != null) {
+						long total = 0;
+
+						// Tính tổng tiền theo giá sale nếu có
+						for (OrderDetail detail : order.getOrderDetails()) {
+							Book book = detail.getBook();
+							int price = (book.getSales() != 0 && book.getSales() > 0) ? book.getSales()
+									: book.getPrice();
+							total += price * detail.getQuantity();
+						}
+
+						// Phí ship
+						int shippingFee = (order.getShippingFee() != null) ? order.getShippingFee() : 30000;
+
+						// Mã giảm giá
+						int discount = (order.getDiscount() != null) ? order.getDiscount().getPrice() : 0;
+
+						// Tổng doanh thu: (tổng tiền - giảm giá + phí ship)
+						sum += total - discount + shippingFee;
 					}
-					sum += 50000;
 				}
 			}
 
-			double total = (double) sum / 1000000;
+			double totalMil = (double) sum / 1_000_000;
 
 			StatisticalRevenue statistical = new StatisticalRevenue();
-			statistical.setPrice(total);
-			statistical.setDate(i); // Đảm bảo cột tương ứng với tháng
-
+			statistical.setPrice(totalMil);
+			statistical.setDate(i); // i đại diện cho tháng
 			listRevenue.add(statistical);
 		}
 
@@ -591,35 +617,49 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<StatisticalRevenue> listStatisticalRevenueByYear(int year) {
 		int minYear = year - 10;
-		List<StatisticalRevenue> listRevenue = new ArrayList<StatisticalRevenue>();
+		List<StatisticalRevenue> listRevenue = new ArrayList<>();
+
 		for (int i = 1; i <= 10; i++) {
+			int currentYear = minYear + i;
 			long sum = 0;
-			List<OrderModel> listOrder = new ArrayList<OrderModel>();
-			listOrder = orderDao.listStatisticalRevenueYear(minYear + i);
 
-			if (!listOrder.isEmpty()) {
-				for (OrderModel order : listOrder) {
-					Discount discount = order.getDiscount();
-					sum = sum + order.getTotal();
-					if (discount != null) {
-						sum = sum - discount.getPrice();
+			List<OrderModel> listOrderModel = orderDao.listStatisticalRevenueYear(currentYear);
+
+			if (!listOrderModel.isEmpty()) {
+				for (OrderModel orderModel : listOrderModel) {
+					Order order = orderDao.getOrderByName(orderModel.getId()).get(0);
+					if (order != null) {
+						long total = 0;
+
+						// Tính tổng giá theo giá sale nếu có
+						for (OrderDetail detail : order.getOrderDetails()) {
+							Book book = detail.getBook();
+							int price = (book.getSales() != 0 && book.getSales() > 0) ? book.getSales()
+									: book.getPrice();
+							total += price * detail.getQuantity();
+						}
+
+						// Phí ship
+						int shippingFee = (order.getShippingFee() != null) ? order.getShippingFee() : 30000;
+
+						// Mã giảm giá
+						int discount = (order.getDiscount() != null) ? order.getDiscount().getPrice() : 0;
+
+						// Doanh thu cuối cùng
+						sum += total - discount + shippingFee;
 					}
-					sum = sum + 50000;
 				}
-
 			}
 
-			double total = (double) sum / 1000000;
+			double totalInMillions = (double) sum / 1_000_000;
 
 			StatisticalRevenue statistical = new StatisticalRevenue();
-			statistical.setPrice(total);
-			statistical.setDate(minYear + i);
+			statistical.setPrice(totalInMillions);
+			statistical.setDate(currentYear);
 			listRevenue.add(statistical);
-
 		}
 
 		return listRevenue;
-
 	}
 
 	@Override

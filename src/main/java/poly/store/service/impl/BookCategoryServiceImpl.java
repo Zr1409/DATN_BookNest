@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import poly.store.dao.BookCategoryDao;
@@ -26,7 +27,20 @@ public class BookCategoryServiceImpl implements BookCategoryService{
 	@Override
 	public BookCategoryModel createBookCategory(BookCategoryModel bookCategoryModel) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+		String username = null;
+
+		// Kiểm tra xem principal có phải là UserDetails hay không
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else if (principal instanceof OAuth2User) {
+			// Nếu là OAuth2User (DefaultOAuth2User), lấy username (thường là email)
+			OAuth2User oauth2User = (OAuth2User) principal;
+			username = (String) oauth2User.getAttribute("email"); // Hoặc sử dụng attribute khác nếu có
+		}
+
+		if (username == null) {
+			throw new RuntimeException("User not authenticated");
+		}
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		User temp = userDao.findUserByEmail(username);
@@ -51,7 +65,20 @@ public class BookCategoryServiceImpl implements BookCategoryService{
 	@Override
 	public void delete(Integer id) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails)principal).getUsername();
+		String username = null;
+
+		// Kiểm tra xem principal có phải là UserDetails hay không
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else if (principal instanceof OAuth2User) {
+			// Nếu là OAuth2User (DefaultOAuth2User), lấy username (thường là email)
+			OAuth2User oauth2User = (OAuth2User) principal;
+			username = (String) oauth2User.getAttribute("email"); // Hoặc sử dụng attribute khác nếu có
+		}
+
+		if (username == null) {
+			throw new RuntimeException("User not authenticated");
+		}
 		User temp = userDao.findUserByEmail(username);
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		
@@ -76,7 +103,20 @@ public class BookCategoryServiceImpl implements BookCategoryService{
 	@Override
 	public BookCategoryModel updateBookCategory(BookCategoryModel bookCategoryModel) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+		String username = null;
+
+		// Kiểm tra xem principal có phải là UserDetails hay không
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else if (principal instanceof OAuth2User) {
+			// Nếu là OAuth2User (DefaultOAuth2User), lấy username (thường là email)
+			OAuth2User oauth2User = (OAuth2User) principal;
+			username = (String) oauth2User.getAttribute("email"); // Hoặc sử dụng attribute khác nếu có
+		}
+
+		if (username == null) {
+			throw new RuntimeException("User not authenticated");
+		}
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		User temp = userDao.findUserByEmail(username);

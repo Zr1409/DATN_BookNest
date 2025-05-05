@@ -80,7 +80,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			// Tạo ví cho người dùng mới
 			Wallet wallet = new Wallet();
 			wallet.setUser(user);
-			wallet.setBalance(new BigDecimal("10000000")); // Tặng 100k cho người dùng mới
+			wallet.setBalance(new BigDecimal("10000000")); // Tặng 10tr cho người dùng mới
 			wallet.setLastUpdated(timestamp.toString());
 			wallet.setCreateDay(timestamp.toString());
 			walletService.save(wallet); // Lưu ví người dùng
